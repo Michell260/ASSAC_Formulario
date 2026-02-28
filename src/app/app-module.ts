@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
 
 @NgModule({
   declarations: [
@@ -11,7 +13,8 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SidebarComponent
+    SidebarComponent,
+    HeaderComponent
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

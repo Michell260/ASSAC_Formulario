@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 240px;
+  right: 0;
+  height: 64px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.08);
+  z-index: 100;
+  font-family: 'Poppins', sans-serif;
+}
+
+.header-titulo {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4c6983;
+  letter-spacing: 0.2px;
+}
+
+.header-derecha {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-notificacion {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: #F5F6F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-notificacion:hover {
+  background: #e8eaed;
+}
+
+.btn-notificacion svg {
+  width: 18px;
+  height: 18px;
+  stroke: #4c6983;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.usuario-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #cb9120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5F6F8;
+}
+
+.usuario-avatar svg {
+  width: 18px;
+  height: 18px;
+  stroke: #4c6983;
+}
+
+.usuario-nombre {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4c6983;
+}

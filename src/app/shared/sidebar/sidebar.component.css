@@ -141,8 +141,7 @@
 .sidebar-footer {
   padding: 16px 12px 24px;
   border-top: 1px solid rgba(255,255,255,0.08);
-}@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
+}
  :host {
    display: block;
    height: 100vh;
