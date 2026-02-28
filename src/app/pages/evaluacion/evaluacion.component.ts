@@ -15,6 +15,7 @@ export class EvaluacionComponent {
     alertaVisible = false;
     alertaMensaje = '';
     alertaTipo = 'exito';
+    tabActivo = 'recibidos';
   evaluaciones = [
     {
       iniciales: 'JP', nombre: 'Juan Pérez', color: '#4c6983',
@@ -92,7 +93,7 @@ export class EvaluacionComponent {
       this.evaluaciones[index].estado = 'Aprobado';
     }
     this.cerrarModal();
-    this.mostrarAlerta(`✓ Formulario "${nombre}" aprobado correctamente`, 'exito');
+    this.mostrarAlerta(` Formulario "${nombre}" aprobado correctamente`, 'exito');
   }
 
   rechazar() {
@@ -102,6 +103,6 @@ export class EvaluacionComponent {
       this.evaluaciones[index].estado = 'Reprobado';
     }
     this.cerrarModal();
-    this.mostrarAlerta(`✗ Formulario "${nombre}" ha sido rechazado`, 'error');
+    this.mostrarAlerta(` Formulario "${nombre}" ha sido rechazado`, 'error');
   }
 }

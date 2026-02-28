@@ -5,6 +5,8 @@ import { App } from './app';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
+import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -13,6 +15,7 @@ import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     SidebarComponent,
     HeaderComponent
   ],

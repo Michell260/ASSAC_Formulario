@@ -1,8 +1,9 @@
 <div class="evaluacion-container">
 
   <div class="evaluacion-header">
-    <h1 class="evaluacion-titulo">Formularios Recibidos y Evaluados</h1>
-    <p class="evaluacion-subtitulo">Listado detallado de las evaluaciones completadas y su desempeño respectivo.</p>
+    <h1 class="evaluacion-titulo titulo-desktop">Formularios Recibidos y Evaluados</h1>
+    <h1 class="evaluacion-titulo titulo-movil">Gestión de Formularios</h1>
+    <p class="evaluacion-subtitulo titulo-desktop">Listado detallado de las evaluaciones completadas y su desempeño respectivo.</p>
   </div>
   <div class="alerta-exito" [ngClass]="{'visible': alertaVisible, 'alerta-error': alertaTipo === 'error'}">
     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
@@ -64,6 +65,71 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Tabs móvil -->
+  <div class="tabs-movil">
+    <button class="tab" [ngClass]="tabActivo === 'pendientes' ? 'activo' : ''" (click)="tabActivo = 'pendientes'">Pendientes</button>
+    <button class="tab" [ngClass]="tabActivo === 'recibidos' ? 'activo' : ''" (click)="tabActivo = 'recibidos'">Recibidos y Evaluados</button>
+  </div>
+
+  <!-- Buscador móvil -->
+  <div class="buscador-movil">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" placeholder="Buscar por trabajador o formulario" />
+  </div>
+
+  <!-- Cards móvil -->
+  <div class="cards-movil">
+    <div class="card-movil" *ngFor="let item of evaluaciones">
+      <div class="card-top">
+        <div>
+          <p class="card-nombre">{{ item.nombre }}</p>
+          <p class="card-formulario">{{ item.formulario }}</p>
+        </div>
+        <span class="estado" [ngClass]="item.estado === 'Aprobado' ? 'aprobado' : 'reprobado'">
+        {{ item.estado | uppercase }}
+      </span>
+      </div>
+      <div class="card-meta">
+      <span class="card-fecha">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        {{ item.fecha }}
+      </span>
+        <span class="card-puntuacion">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        {{ item.puntuacion }}
+      </span>
+      </div>
+      <div class="card-bottom">
+        <button class="btn-accion btn-ver" (click)="abrirModal(item)" title="Ver">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#cb9120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+        <button class="btn-accion btn-pdf" title="Descargar PDF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4c6983" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <text x="6" y="18" font-size="4.5" fill="#4c6983" stroke="none" font-weight="bold">PDF</text>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cargar más -->
+  <button class="cargar-mas">Cargar más resultados</button>
 
   <!-- Paginación -->
   <div class="paginacion">

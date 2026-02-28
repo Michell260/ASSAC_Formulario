@@ -1,0 +1,508 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.config-container {
+  padding: 32px;
+  font-family: 'Poppins', sans-serif;
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.config-titulo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #cb9120;
+  margin-bottom: 4px;
+}
+
+.config-subtitulo {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.config-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.seccion {
+  padding: 8px 0;
+}
+
+.seccion-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.seccion-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.seccion-titulo h2 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #2d2d2d;
+}
+
+.seccion-desc {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.icono-seccion {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icono-seccion svg {
+  width: 20px;
+  height: 20px;
+}
+
+.divider {
+  height: 1px;
+  background: #f0f1f3;
+  margin: 20px 0;
+}
+
+.campo {
+  margin-bottom: 16px;
+}
+
+.campo label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 10px 40px 10px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input-wrapper input:focus {
+  border-color: #cb9120;
+}
+
+.btn-ojo {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.btn-ojo svg {
+  width: 16px;
+  height: 16px;
+  stroke: #aaa;
+}
+
+.campos-dobles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.acciones-contrasena {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn-cancelar {
+  padding: 9px 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: white;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-actualizar {
+  padding: 9px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #cb9120;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 12px rgba(203,145,32,0.35);
+}
+
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fffbf0;
+  border: 1px solid #f0d080;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 12px;
+}
+
+.info-box p {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.notif-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.notif-item:last-child {
+  border-bottom: none;
+}
+
+.notif-titulo {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2d2d2d;
+  margin-bottom: 2px;
+}
+
+.notif-desc {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #ddd;
+  border-radius: 24px;
+  transition: background 0.3s;
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.toggle input:checked + .slider {
+  background: #cb9120;
+}
+
+.toggle input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+/* Footer */
+.config-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 4px;
+}
+
+.ultimo-acceso {
+  font-size: 12px;
+  color: #aaa;
+  font-style: italic;
+}
+
+.btn-cerrar-sesion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #cb9120;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 12px rgba(203,145,32,0.35);
+}
+
+.copyright {
+  text-align: center;
+  font-size: 11px;
+  color: #bbb;
+  padding-bottom: 16px;
+}
+@media (max-width: 768px) {
+
+  .config-container {
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  /* Ocultar vista desktop */
+  .config-titulo,
+  .config-subtitulo,
+  .config-card,
+  .config-footer {
+    display: none;
+  }
+
+  /* Perfil móvil */
+  .perfil-movil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0 24px;
+    gap: 10px;
+  }
+
+  .perfil-avatar {
+    position: relative;
+    width: 90px;
+    height: 90px;
+  }
+
+  .perfil-avatar img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0e8df;
+  }
+
+  .perfil-avatar-placeholder {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #f0e8df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .perfil-avatar-placeholder svg {
+    width: 48px;
+    height: 48px;
+    stroke: #c4a882;
+  }
+
+  .perfil-editar {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #cb9120;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .perfil-editar svg {
+    width: 12px;
+    height: 12px;
+    stroke: white;
+  }
+
+  .perfil-nombre {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d2d2d;
+    margin: 0;
+  }
+
+  .perfil-rol {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #4c6983;
+    background: #eef2f6;
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+
+  .seccion-movil {
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  .seccion-movil-titulo {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #4c6983;
+    margin-bottom: 10px;
+    padding: 0 4px;
+  }
+
+  .seccion-movil-card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+
+  .item-movil {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+  }
+
+  .item-movil:last-child {
+    border-bottom: none;
+  }
+
+  .item-icono {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #fff8ec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .item-icono svg {
+    width: 18px;
+    height: 18px;
+    stroke: #cb9120;
+  }
+
+  .item-texto {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2d2d2d;
+  }
+
+  .item-flecha svg {
+    width: 16px;
+    height: 16px;
+    stroke: #aaa;
+  }
+
+  .item-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+  }
+
+  .item-idioma {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #888;
+  }
+
+  .item-idioma svg {
+    width: 14px;
+    height: 14px;
+    stroke: #888;
+  }
+
+  .btn-cerrar-movil {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: white;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4c6983;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-top: 8px;
+  }
+
+  .btn-cerrar-movil svg {
+    width: 18px;
+    height: 18px;
+    stroke: #4c6983;
+  }
+
+  .copyright {
+    display: none;
+  }
+}
+
+/* Ocultar elementos móvil en desktop */
+@media (min-width: 769px) {
+  .perfil-movil,
+  .seccion-movil,
+  .btn-cerrar-movil {
+    display: none;
+  }
+}
