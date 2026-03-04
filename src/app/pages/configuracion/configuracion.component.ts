@@ -14,12 +14,22 @@ export class ConfiguracionComponent {
   mostrarNuevaContrasena = false;
   mostrarConfirmarContrasena = false;
 
-  contrasenaActual = '........';
-  nuevaContrasena = '........';
-  confirmarContrasena = '........';
+  contrasenaActual = 'Contraseña actual';
+  nuevaContrasena = 'Contraseña nueva';
+  confirmarContrasena = 'Contraseña nueva';
 
   activar2FA = false;
   notifCorreo = true;
   notifSistema = true;
   notifPush = false;
+
+  vistaMovil: 'principal' | 'contrasena' = 'principal';
+
+  mostrarCambioContrasena() {
+    this.vistaMovil = 'contrasena';
+  }
+
+  volverPrincipal() {
+    this.vistaMovil = 'principal';
+  }
 }

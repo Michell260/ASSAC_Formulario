@@ -168,7 +168,7 @@
 
 </div>
 <!-- Vista móvil -->
-<div class="perfil-movil">
+<div class="perfil-movil" *ngIf="vistaMovil === 'principal'">
   <div class="perfil-avatar">
     <div class="perfil-avatar-placeholder">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -188,10 +188,10 @@
 </div>
 
 <!-- Sección cuenta -->
-<div class="seccion-movil">
+<div class="seccion-movil" *ngIf="vistaMovil === 'principal'">
   <p class="seccion-movil-titulo">Configuración de la Cuenta</p>
   <div class="seccion-movil-card">
-    <div class="item-movil">
+    <div class="item-movil" (click)="mostrarCambioContrasena()">
       <div class="item-icono">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
@@ -222,7 +222,7 @@
 </div>
 
 <!-- Sección preferencias -->
-<div class="seccion-movil">
+<div class="seccion-movil" *ngIf="vistaMovil === 'principal'">
   <p class="seccion-movil-titulo">Preferencias</p>
   <div class="seccion-movil-card">
     <div class="item-movil item-toggle">
@@ -258,7 +258,7 @@
 </div>
 
 <!-- Cerrar sesión móvil -->
-<button class="btn-cerrar-movil">
+<button class="btn-cerrar-movil" *ngIf="vistaMovil === 'principal'">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
     <polyline points="16 17 21 12 16 7"/>
@@ -266,3 +266,98 @@
   </svg>
   Cerrar Sesión
 </button>
+<!-- Vista cambio contraseña móvil -->
+<div class="cambio-contrasena-movil" *ngIf="vistaMovil === 'contrasena'">
+  <div class="cambio-header">
+    <button class="btn-volver" (click)="volverPrincipal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <div class="cambio-logo">
+      <img src="assets/logo-assac-blanco.png" alt="ASSAC" />
+    </div>
+    <span class="cambio-marca">ASSAC </span>
+  </div>
+
+  <h2 class="cambio-titulo">Cambiar contraseña</h2>
+  <p class="cambio-subtitulo">Asegura tu cuenta actualizando tu clave de acceso.</p>
+
+  <div class="campo">
+    <label>Contraseña actual</label>
+    <div class="input-wrapper">
+      <input [type]="mostrarContrasenaActual ? 'text' : 'password'" [(ngModel)]="contrasenaActual"/>
+      <button class="btn-ojo" (click)="mostrarContrasenaActual = !mostrarContrasenaActual">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="campo">
+    <label>Nueva contraseña</label>
+    <div class="input-wrapper">
+      <input [type]="mostrarNuevaContrasena ? 'text' : 'password'" [(ngModel)]="nuevaContrasena"/>
+      <button class="btn-ojo" (click)="mostrarNuevaContrasena = !mostrarNuevaContrasena">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="campo">
+    <label>Confirmar nueva contraseña</label>
+    <div class="input-wrapper">
+      <input [type]="mostrarConfirmarContrasena ? 'text' : 'password'" [(ngModel)]="confirmarContrasena"/>
+      <button class="btn-ojo" (click)="mostrarConfirmarContrasena = !mostrarConfirmarContrasena">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Requisitos -->
+  <div class="requisitos">
+    <p class="requisitos-titulo">Requisitos de Seguridad</p>
+    <div class="requisito cumplido">
+      <svg viewBox="0 0 24 24" fill="#2e7d32" stroke="none" width="16" height="16">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="9 12 11 14 15 10" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Mínimo 8 caracteres</span>
+    </div>
+    <div class="requisito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" width="16" height="16">
+        <circle cx="12" cy="12" r="10"/>
+      </svg>
+      <span>Incluye un número</span>
+    </div>
+    <div class="requisito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" width="16" height="16">
+        <circle cx="12" cy="12" r="10"/>
+      </svg>
+      <span>Una letra mayúscula</span>
+    </div>
+
+    <div class="fortaleza">
+      <div class="fortaleza-barra">
+        <div class="fortaleza-progreso media"></div>
+      </div>
+      <span class="fortaleza-texto">Fortaleza: Media</span>
+    </div>
+  </div>
+
+  <button class="btn-actualizar-movil">
+    Actualizar contraseña
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+      <polyline points="23 4 23 10 17 10"/>
+      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+    </svg>
+  </button>
+</div>

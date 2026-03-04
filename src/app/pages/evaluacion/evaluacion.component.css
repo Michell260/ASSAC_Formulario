@@ -959,51 +959,21 @@
   }
 @media (max-width: 768px) {
 
-  .modal-overlay {
-    top: 0;
-    left: 0;
-    padding: 16px;
-    align-items: flex-end;
-  }
+    .modal-overlay {
+      top: 0;
+      left: 0;
+      padding: 16px;
+      align-items: flex-end;
+    }
 
-  .modal {
-    max-height: 90vh;
-    border-radius: 20px 20px 16px 16px;
-    width: 100%;
-  }
+    .modal {
+      max-height: 90vh;
+      border-radius: 20px 20px 16px 16px;
+      width: 100%;
+    }
 
-  .modal-resumen {
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .resumen-item:last-child {
-    display: none;
-  }
-
-  .pregunta-respuestas {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-footer {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .btn-descargar {
-    width: 100%;
-    text-align: center;
-    order: 3;
-  }
-
-  .btn-rechazar {
-    flex: 1;
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .btn-aprobar {
-    flex: 1;
-    justify-content: center;
-  }
-}
+    .modal-resumen {
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    }
