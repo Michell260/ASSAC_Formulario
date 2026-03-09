@@ -1,161 +1,119 @@
-<div class="config-container">
+<!-- ═══════════════ VISTA DESKTOP ═══════════════ -->
+<div class="hidden md:block max-w-2xl mx-auto w-full p-8 font-[Poppins]">
 
-  <div class="config-header">
-    <h1 class="config-titulo">Perfil y Configuración</h1>
-    <p class="config-subtitulo">Gestione su cuenta, seguridad y preferencias de notificación en un solo lugar.</p>
-  </div>
+  <!-- Header -->
+  <h1 class="text-xl font-bold text-[#cb9120] mb-1">Perfil y Configuración</h1>
+  <p class="text-sm text-gray-400 mb-6">Gestione su cuenta, seguridad y preferencias de notificación en un solo lugar.</p>
 
-  <div class="config-card">
+  <!-- Card -->
+  <div class="bg-white rounded-2xl shadow-sm p-7 mb-5">
 
     <!-- Cambio de contraseña -->
-    <div class="seccion">
-      <div class="seccion-titulo">
-        <span class="icono-seccion">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#cb9120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    <div class="pb-2">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-7 h-7 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#cb9120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
         </span>
-        <h2>Cambio de Contraseña</h2>
+        <h2 class="text-sm font-bold text-gray-800">Cambio de Contraseña</h2>
       </div>
 
-      <div class="campo">
-        <label>Contraseña actual</label>
-        <div class="input-wrapper">
-          <input [type]="mostrarContrasenaActual ? 'text' : 'password'" [(ngModel)]="contrasenaActual"/>
-          <button class="btn-ojo" (click)="mostrarContrasenaActual = !mostrarContrasenaActual">
-            <svg *ngIf="!mostrarContrasenaActual" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-            <svg *ngIf="mostrarContrasenaActual" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-              <line x1="1" y1="1" x2="23" y2="23"/>
+      <!-- Contraseña actual -->
+      <div class="mb-4">
+        <label class="block text-xs font-medium text-gray-500 mb-1.5">Contraseña actual</label>
+        <div class="relative">
+          <input [type]="mostrarContrasenaActual ? 'text' : 'password'" [(ngModel)]="contrasenaActual"
+                 class="w-full px-3.5 py-2.5 pr-10 border border-gray-200 rounded-xl text-sm text-gray-700 outline-none focus:border-[#cb9120] transition-colors font-[Poppins]"/>
+          <button class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center" (click)="mostrarContrasenaActual = !mostrarContrasenaActual">
+            <svg class="w-4 h-4 stroke-gray-400" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
             </svg>
           </button>
         </div>
       </div>
 
-      <div class="campos-dobles">
-        <div class="campo">
-          <label>Nueva contraseña</label>
-          <div class="input-wrapper">
-            <input [type]="mostrarNuevaContrasena ? 'text' : 'password'" [(ngModel)]="nuevaContrasena"/>
-            <button class="btn-ojo" (click)="mostrarNuevaContrasena = !mostrarNuevaContrasena">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
+      <!-- Nueva y confirmar -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Nueva contraseña</label>
+          <div class="relative">
+            <input [type]="mostrarNuevaContrasena ? 'text' : 'password'" [(ngModel)]="nuevaContrasena"
+                   class="w-full px-3.5 py-2.5 pr-10 border border-gray-200 rounded-xl text-sm text-gray-700 outline-none focus:border-[#cb9120] transition-colors font-[Poppins]"/>
+            <button class="absolute right-3 top-1/2 -translate-y-1/2" (click)="mostrarNuevaContrasena = !mostrarNuevaContrasena">
+              <svg class="w-4 h-4 stroke-gray-400" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
               </svg>
             </button>
           </div>
         </div>
-        <div class="campo">
-          <label>Confirmar contraseña</label>
-          <div class="input-wrapper">
-            <input [type]="mostrarConfirmarContrasena ? 'text' : 'password'" [(ngModel)]="confirmarContrasena"/>
-            <button class="btn-ojo" (click)="mostrarConfirmarContrasena = !mostrarConfirmarContrasena">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Confirmar contraseña</label>
+          <div class="relative">
+            <input [type]="mostrarConfirmarContrasena ? 'text' : 'password'" [(ngModel)]="confirmarContrasena"
+                   class="w-full px-3.5 py-2.5 pr-10 border border-gray-200 rounded-xl text-sm text-gray-700 outline-none focus:border-[#cb9120] transition-colors font-[Poppins]"/>
+            <button class="absolute right-3 top-1/2 -translate-y-1/2" (click)="mostrarConfirmarContrasena = !mostrarConfirmarContrasena">
+              <svg class="w-4 h-4 stroke-gray-400" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
               </svg>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="acciones-contrasena">
-        <button class="btn-cancelar">Cancelar</button>
-        <button class="btn-actualizar">Actualizar Contraseña</button>
+      <div class="flex justify-end gap-2.5 mt-2">
+        <button class="px-5 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-500 font-[Poppins]">Cancelar</button>
+        <button class="px-5 py-2 rounded-xl bg-[#cb9120] text-sm font-semibold text-white shadow-[0_4px_12px_rgba(203,145,32,0.35)] font-[Poppins]">Actualizar Contraseña</button>
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <!-- 2FA -->
-    <div class="seccion">
-      <div class="seccion-fila">
-        <div class="seccion-titulo">
-          <span class="icono-seccion">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#cb9120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-          </span>
-          <div>
-            <h2>Activar 2FA</h2>
-            <p class="seccion-desc">Aumente la seguridad de su cuenta utilizando autenticación de dos factores.</p>
-          </div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" [(ngModel)]="activar2FA"/>
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="info-box" *ngIf="activar2FA">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#cb9120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8" x2="12" y2="12"/>
-          <line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-        <p>Al activar esta opción, se le solicitará un código generado por su aplicación de autenticación favorita (Google Authenticator, Authy, etc) al iniciar sesión.</p>
-      </div>
-    </div>
-
-    <div class="divider"></div>
+    <div class="h-px bg-gray-100 my-5"></div>
 
     <!-- Notificaciones -->
-    <div class="seccion">
-      <div class="seccion-titulo">
-        <span class="icono-seccion">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#cb9120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <div>
+      <div class="flex items-center gap-2 mb-4">
+        <span class="w-7 h-7 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#cb9120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
             <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
           </svg>
         </span>
-        <h2>Notificaciones</h2>
+        <h2 class="text-sm font-bold text-gray-800">Notificaciones</h2>
       </div>
 
-      <div class="notif-item">
+      <div class="flex items-center justify-between py-3.5 border-b border-gray-50">
         <div>
-          <p class="notif-titulo">Correo electrónico</p>
-          <p class="notif-desc">Recibir resúmenes diarios y alertas de seguridad via email.</p>
+          <p class="text-sm font-semibold text-gray-800 mb-0.5">Correo electrónico</p>
+          <p class="text-xs text-gray-400">Recibir resúmenes diarios y alertas de seguridad via email.</p>
         </div>
-        <label class="toggle">
-          <input type="checkbox" [(ngModel)]="notifCorreo"/>
-          <span class="slider"></span>
-        </label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="notifCorreo"/><span class="slider"></span></label>
       </div>
 
-      <div class="notif-item">
+      <div class="flex items-center justify-between py-3.5 border-b border-gray-50">
         <div>
-          <p class="notif-titulo">Alertas de sistema</p>
-          <p class="notif-desc">Notificaciones sobre actualizaciones críticas del servidor.</p>
+          <p class="text-sm font-semibold text-gray-800 mb-0.5">Alertas de sistema</p>
+          <p class="text-xs text-gray-400">Notificaciones sobre actualizaciones críticas del servidor.</p>
         </div>
-        <label class="toggle">
-          <input type="checkbox" [(ngModel)]="notifSistema"/>
-          <span class="slider"></span>
-        </label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="notifSistema"/><span class="slider"></span></label>
       </div>
 
-      <div class="notif-item">
+      <div class="flex items-center justify-between py-3.5">
         <div>
-          <p class="notif-titulo">Notificaciones push</p>
-          <p class="notif-desc">Alertas en tiempo real en su navegador o dispositivo móvil.</p>
+          <p class="text-sm font-semibold text-gray-800 mb-0.5">Notificaciones push</p>
+          <p class="text-xs text-gray-400">Alertas en tiempo real en su navegador o dispositivo móvil.</p>
         </div>
-        <label class="toggle">
-          <input type="checkbox" [(ngModel)]="notifPush"/>
-          <span class="slider"></span>
-        </label>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="notifPush"/><span class="slider"></span></label>
       </div>
     </div>
 
   </div>
 
   <!-- Footer -->
-  <div class="config-footer">
-    <p class="ultimo-acceso">Último inicio de sesión: Hoy a las 09:42 AM</p>
-    <button class="btn-cerrar-sesion">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+  <div class="flex items-center justify-between px-1 py-4">
+    <p class="text-xs text-gray-300 italic">Último inicio de sesión: Hoy a las 09:42 AM</p>
+    <button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#cb9120] text-sm font-semibold text-white shadow-[0_4px_12px_rgba(203,145,32,0.35)] font-[Poppins]">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
         <polyline points="16 17 21 12 16 7"/>
         <line x1="21" y1="12" x2="9" y2="12"/>
@@ -164,198 +122,195 @@
     </button>
   </div>
 
-  <p class="copyright">© 2026 ASSAC. Todos los derechos reservados.</p>
-
-</div>
-<!-- Vista móvil -->
-<div class="perfil-movil" *ngIf="vistaMovil === 'principal'">
-  <div class="perfil-avatar">
-    <div class="perfil-avatar-placeholder">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20a8 8 0 0 1 16 0"/>
-      </svg>
-    </div>
-    <div class="perfil-editar">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-      </svg>
-    </div>
-  </div>
-  <h2 class="perfil-nombre">Juan Pérez</h2>
-  <span class="perfil-rol">ADMINISTRADOR</span>
+  <p class="text-center text-xs text-gray-300 pb-4">© 2026 ASSAC. Todos los derechos reservados.</p>
 </div>
 
-<!-- Sección cuenta -->
-<div class="seccion-movil" *ngIf="vistaMovil === 'principal'">
-  <p class="seccion-movil-titulo">Configuración de la Cuenta</p>
-  <div class="seccion-movil-card">
-    <div class="item-movil" (click)="mostrarCambioContrasena()">
-      <div class="item-icono">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+
+<!-- ═══════════════ VISTA MÓVIL - PRINCIPAL ═══════════════ -->
+<div class="md:hidden font-[Poppins]" *ngIf="vistaMovil === 'principal'">
+
+  <!-- Perfil -->
+  <div class="flex flex-col items-center py-6 gap-2.5">
+    <div class="relative w-[90px] h-[90px]">
+      <div class="w-[90px] h-[90px] rounded-full bg-[#f0e8df] flex items-center justify-center">
+        <svg class="w-12 h-12 stroke-[#c4a882]" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/>
         </svg>
       </div>
-      <span class="item-texto">Cambiar contraseña</span>
-      <span class="item-flecha">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="absolute bottom-0.5 right-0.5 w-[26px] h-[26px] rounded-full bg-[#cb9120] border-2 border-white flex items-center justify-center cursor-pointer">
+        <svg class="w-3 h-3 stroke-white" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </div>
+    </div>
+    <h2 class="text-lg font-bold text-gray-800">Juan Pérez</h2>
+    <span class="text-[11px] font-semibold tracking-widest text-[#4c6983] bg-[#eef2f6] px-3.5 py-1 rounded-full">ADMINISTRADOR</span>
+  </div>
+
+  <!-- Cuenta -->
+  <div class="mb-6 px-4">
+    <p class="text-[11px] font-bold tracking-widest uppercase text-[#4c6983] mb-2.5 px-1">Configuración de la Cuenta</p>
+    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div class="flex items-center gap-3.5 p-4 border-b border-gray-50 cursor-pointer" (click)="mostrarCambioContrasena()">
+        <div class="w-[38px] h-[38px] rounded-xl bg-[#fff8ec] flex items-center justify-center shrink-0">
+          <svg class="w-[18px] h-[18px] stroke-[#cb9120]" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <span class="flex-1 text-sm font-medium text-gray-800">Cambiar contraseña</span>
+        <svg class="w-4 h-4 stroke-gray-300" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"/>
         </svg>
-      </span>
-    </div>
-    <div class="item-movil">
-      <div class="item-icono">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
       </div>
-      <span class="item-texto">Autenticación de dos factores (2FA)</span>
-      <span class="item-flecha">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="flex items-center gap-3.5 p-4 cursor-pointer">
+        <div class="w-[38px] h-[38px] rounded-xl bg-[#fff8ec] flex items-center justify-center shrink-0">
+          <svg class="w-[18px] h-[18px] stroke-[#cb9120]" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <span class="flex-1 text-sm font-medium text-gray-800">Autenticación de dos factores (2FA)</span>
+        <svg class="w-4 h-4 stroke-gray-300" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"/>
         </svg>
-      </span>
-    </div>
-  </div>
-</div>
-
-<!-- Sección preferencias -->
-<div class="seccion-movil" *ngIf="vistaMovil === 'principal'">
-  <p class="seccion-movil-titulo">Preferencias</p>
-  <div class="seccion-movil-card">
-    <div class="item-movil item-toggle">
-      <div class="item-icono">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
-      </div>
-      <span class="item-texto">Notificaciones push</span>
-      <label class="toggle">
-        <input type="checkbox" [(ngModel)]="notifPush"/>
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div class="item-movil item-toggle">
-      <div class="item-icono">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </div>
-      <span class="item-texto">Idioma</span>
-      <div class="item-idioma">
-        Español
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
       </div>
     </div>
   </div>
+
+  <!-- Preferencias -->
+  <div class="mb-6 px-4">
+    <p class="text-[11px] font-bold tracking-widest uppercase text-[#4c6983] mb-2.5 px-1">Preferencias</p>
+    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div class="flex items-center gap-3.5 p-4 border-b border-gray-50">
+        <div class="w-[38px] h-[38px] rounded-xl bg-[#fff8ec] flex items-center justify-center shrink-0">
+          <svg class="w-[18px] h-[18px] stroke-[#cb9120]" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </div>
+        <span class="flex-1 text-sm font-medium text-gray-800">Notificaciones push</span>
+        <label class="toggle"><input type="checkbox" [(ngModel)]="notifPush"/><span class="slider"></span></label>
+      </div>
+      <div class="flex items-center gap-3.5 p-4">
+        <div class="w-[38px] h-[38px] rounded-xl bg-[#fff8ec] flex items-center justify-center shrink-0">
+          <svg class="w-[18px] h-[18px] stroke-[#cb9120]" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <span class="flex-1 text-sm font-medium text-gray-800">Idioma</span>
+        <div class="flex items-center gap-1.5 text-sm text-gray-400">
+          Español
+          <svg class="w-3.5 h-3.5 stroke-gray-400" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cerrar sesión -->
+  <div class="px-4 pb-6">
+    <button class="w-full py-4 rounded-2xl bg-white text-sm font-semibold text-[#4c6983] flex items-center justify-center gap-2.5 shadow-sm font-[Poppins]">
+      <svg class="w-[18px] h-[18px] stroke-[#4c6983]" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      Cerrar Sesión
+    </button>
+  </div>
 </div>
 
-<!-- Cerrar sesión móvil -->
-<button class="btn-cerrar-movil" *ngIf="vistaMovil === 'principal'">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-    <polyline points="16 17 21 12 16 7"/>
-    <line x1="21" y1="12" x2="9" y2="12"/>
-  </svg>
-  Cerrar Sesión
-</button>
-<!-- Vista cambio contraseña móvil -->
-<div class="cambio-contrasena-movil" *ngIf="vistaMovil === 'contrasena'">
-  <div class="cambio-header">
-    <button class="btn-volver" (click)="volverPrincipal()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+
+<!-- ═══════════════ VISTA MÓVIL - CAMBIAR CONTRASEÑA ═══════════════ -->
+<div class="md:hidden px-4 font-[Poppins]" *ngIf="vistaMovil === 'contrasena'">
+
+  <!-- Header -->
+  <div class="flex items-center gap-2.5 py-4 mb-2">
+    <button class="w-8 h-8 flex items-center justify-center border-none bg-transparent cursor-pointer" (click)="volverPrincipal()">
+      <svg class="w-6 h-6 stroke-[#4c6983]" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6"/>
       </svg>
     </button>
-    <div class="cambio-logo">
-      <img src="assets/logo-assac-blanco.png" alt="ASSAC" />
+    <div class="w-7 h-7">
+      <img src="assets/logo-assac-blanco.png" alt="ASSAC" class="w-full h-full object-contain"/>
     </div>
-    <span class="cambio-marca">ASSAC </span>
+    <span class="text-sm font-bold text-[#4c6983] ml-auto">ASSAC INTEGRAL</span>
   </div>
 
-  <h2 class="cambio-titulo">Cambiar contraseña</h2>
-  <p class="cambio-subtitulo">Asegura tu cuenta actualizando tu clave de acceso.</p>
+  <h2 class="text-xl font-bold text-gray-800 mb-1.5">Cambiar contraseña</h2>
+  <p class="text-sm text-gray-400 mb-6 leading-relaxed">Asegura tu cuenta actualizando tu clave de acceso.</p>
 
-  <div class="campo">
-    <label>Contraseña actual</label>
-    <div class="input-wrapper">
-      <input [type]="mostrarContrasenaActual ? 'text' : 'password'" [(ngModel)]="contrasenaActual"/>
-      <button class="btn-ojo" (click)="mostrarContrasenaActual = !mostrarContrasenaActual">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
+  <!-- Campos -->
+  <div class="mb-4">
+    <label class="block text-xs font-medium text-gray-500 mb-1.5">Contraseña actual</label>
+    <div class="relative">
+      <input [type]="mostrarContrasenaActual ? 'text' : 'password'" [(ngModel)]="contrasenaActual"
+             class="w-full px-3.5 py-3 pr-10 border border-gray-200 rounded-xl text-sm text-gray-700 outline-none focus:border-[#cb9120] font-[Poppins]"/>
+      <button class="absolute right-3 top-1/2 -translate-y-1/2" (click)="mostrarContrasenaActual = !mostrarContrasenaActual">
+        <svg class="w-4 h-4 stroke-gray-400" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
     </div>
   </div>
 
-  <div class="campo">
-    <label>Nueva contraseña</label>
-    <div class="input-wrapper">
-      <input [type]="mostrarNuevaContrasena ? 'text' : 'password'" [(ngModel)]="nuevaContrasena"/>
-      <button class="btn-ojo" (click)="mostrarNuevaContrasena = !mostrarNuevaContrasena">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
+  <div class="mb-4">
+    <label class="block text-xs font-medium text-gray-500 mb-1.5">Nueva contraseña</label>
+    <div class="relative">
+      <input [type]="mostrarNuevaContrasena ? 'text' : 'password'" [(ngModel)]="nuevaContrasena"
+             class="w-full px-3.5 py-3 pr-10 border border-gray-200 rounded-xl text-sm text-gray-700 outline-none focus:border-[#cb9120] font-[Poppins]"/>
+      <button class="absolute right-3 top-1/2 -translate-y-1/2" (click)="mostrarNuevaContrasena = !mostrarNuevaContrasena">
+        <svg class="w-4 h-4 stroke-gray-400" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
     </div>
   </div>
 
-  <div class="campo">
-    <label>Confirmar nueva contraseña</label>
-    <div class="input-wrapper">
-      <input [type]="mostrarConfirmarContrasena ? 'text' : 'password'" [(ngModel)]="confirmarContrasena"/>
-      <button class="btn-ojo" (click)="mostrarConfirmarContrasena = !mostrarConfirmarContrasena">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
+  <div class="mb-4">
+    <label class="block text-xs font-medium text-gray-500 mb-1.5">Confirmar nueva contraseña</label>
+    <div class="relative">
+      <input [type]="mostrarConfirmarContrasena ? 'text' : 'password'" [(ngModel)]="confirmarContrasena"
+             class="w-full px-3.5 py-3 pr-10 border border-gray-200 rounded-xl text-sm text-gray-700 outline-none focus:border-[#cb9120] font-[Poppins]"/>
+      <button class="absolute right-3 top-1/2 -translate-y-1/2" (click)="mostrarConfirmarContrasena = !mostrarConfirmarContrasena">
+        <svg class="w-4 h-4 stroke-gray-400" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
     </div>
   </div>
 
   <!-- Requisitos -->
-  <div class="requisitos">
-    <p class="requisitos-titulo">Requisitos de Seguridad</p>
-    <div class="requisito cumplido">
-      <svg viewBox="0 0 24 24" fill="#2e7d32" stroke="none" width="16" height="16">
+  <div class="my-5">
+    <p class="text-[10px] font-bold tracking-widest uppercase text-[#cb9120] mb-3">Requisitos de Seguridad</p>
+    <div class="flex items-center gap-2 mb-2 text-sm text-green-800">
+      <svg viewBox="0 0 24 24" fill="#2e7d32" stroke="none" class="w-4 h-4 shrink-0">
         <circle cx="12" cy="12" r="10"/>
         <polyline points="9 12 11 14 15 10" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <span>Mínimo 8 caracteres</span>
     </div>
-    <div class="requisito">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" width="16" height="16">
-        <circle cx="12" cy="12" r="10"/>
-      </svg>
+    <div class="flex items-center gap-2 mb-2 text-sm text-gray-500">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" class="w-4 h-4 shrink-0"><circle cx="12" cy="12" r="10"/></svg>
       <span>Incluye un número</span>
     </div>
-    <div class="requisito">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" width="16" height="16">
-        <circle cx="12" cy="12" r="10"/>
-      </svg>
+    <div class="flex items-center gap-2 mb-2 text-sm text-gray-500">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" class="w-4 h-4 shrink-0"><circle cx="12" cy="12" r="10"/></svg>
       <span>Una letra mayúscula</span>
     </div>
-
-    <div class="fortaleza">
-      <div class="fortaleza-barra">
-        <div class="fortaleza-progreso media"></div>
+    <div class="mt-4">
+      <div class="h-1 bg-gray-100 rounded-full mb-1.5 overflow-hidden">
+        <div class="h-full w-[55%] bg-[#cb9120] rounded-full"></div>
       </div>
-      <span class="fortaleza-texto">Fortaleza: Media</span>
+      <span class="text-[11px] text-gray-400">Fortaleza: Media</span>
     </div>
   </div>
 
-  <button class="btn-actualizar-movil">
+  <button class="w-full py-4 rounded-2xl bg-[#cb9120] text-white text-sm font-semibold flex items-center justify-center gap-2.5 shadow-[0_4px_16px_rgba(203,145,32,0.35)] font-[Poppins] mt-2 mb-6">
     Actualizar contraseña
-    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
       <polyline points="23 4 23 10 17 10"/>
       <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
     </svg>

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
-import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
+import { resume_routes } from './pages/resume/resume.routes';
 
 const routes: Routes = [
-  { path: 'evaluacion', component: EvaluacionComponent },
-  { path: 'configuracion', component: ConfiguracionComponent },
-  { path: '', redirectTo: 'evaluacion', pathMatch: 'full' }
+  {
+    path: '',
+    children: resume_routes
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
