@@ -1,0 +1,1072 @@
+<div class="w-full min-h-screen font-['Poppins',sans-serif]" [style.background]="vista === 'editor' ? formularioActual.tema.colorFondo : '#F5F6F8'">
+
+  <!-- ── ALERTA FLOTANTE ── -->
+  <div *ngIf="alertaVisible" class="fixed top-5 right-5 z-[999] flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg text-white text-xs font-medium animate-fade-in"
+       [ngClass]="alertaTipo === 'exito' ? 'bg-[#2e7d32]' : 'bg-[#c62828]'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 shrink-0">
+      <circle cx="12" cy="12" r="10"/>
+      <polyline *ngIf="alertaTipo==='exito'" points="20 6 9 17 4 12"/>
+      <line *ngIf="alertaTipo==='error'" x1="15" y1="9" x2="9" y2="15"/>
+      <line *ngIf="alertaTipo==='error'" x1="9" y1="9" x2="15" y2="15"/>
+    </svg>
+    {{ alertaMensaje }}
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       VISTA: LISTA
+  ════════════════════════════════════════════════ -->
+  <div *ngIf="vista === 'lista'" class="w-full px-4 sm:px-6 lg:px-10 pt-6 pb-10 max-w-screen-xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+      <div>
+        <h1 class="text-xl font-bold text-[#2D3E50]">Gestión de Reportes</h1>
+        <p class="text-xs text-[#9BAAB8] mt-0.5">Crea, gestiona y publica formularios digitales</p>
+      </div>
+      <button (click)="abrirEditor()" class="flex items-center gap-2 bg-[#C89B3C] hover:bg-[#B5882E] text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-md transition-all self-start sm:self-auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Crear Nuevo Formulario
+      </button>
+    </div>
+
+    <!-- Métricas -->
+    <div class="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
+      <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-[#EEF1F5] text-center">
+        <p class="text-xl sm:text-2xl font-bold text-[#2D3E50]">{{ formularios.length }}</p>
+        <p class="text-[10px] sm:text-xs text-[#9BAAB8] mt-0.5">Total</p>
+      </div>
+      <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-[#EEF1F5] text-center">
+        <p class="text-xl sm:text-2xl font-bold text-[#C89B3C]">{{ totalPublicados }}</p>
+        <p class="text-[10px] sm:text-xs text-[#9BAAB8] mt-0.5">Publicados</p>
+      </div>
+      <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-[#EEF1F5] text-center">
+        <p class="text-xl sm:text-2xl font-bold text-[#4C6983]">{{ totalRespuestas }}</p>
+        <p class="text-[10px] sm:text-xs text-[#9BAAB8] mt-0.5">Respuestas</p>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex border-b border-[#E2E8F0] mb-4">
+      <button *ngFor="let tab of tabsLista" (click)="cambiarTab(tab.v)"
+              class="px-4 py-2.5 text-xs sm:text-sm font-medium border-b-2 transition-all"
+              [ngClass]="tabLista===tab.v ? 'text-[#C89B3C] border-[#C89B3C] font-semibold' : 'text-[#9BAAB8] border-transparent hover:text-[#2D3E50]'">
+        {{ tab.l }}
+      </button>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div *ngFor="let f of formulariosFiltrados" class="bg-white rounded-2xl shadow-sm border border-[#EEF1F5] overflow-hidden hover:shadow-md transition-shadow">
+        <div class="h-1.5 w-full" [style.background]="f.estado==='publicado' ? f.tema.colorAcento : '#DDE4EC'"></div>
+        <div class="p-4 sm:p-5">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <h3 class="text-sm font-semibold text-[#2D3E50] leading-snug flex-1">{{ f.titulo }}</h3>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0"
+                  [ngClass]="f.estado==='publicado' ? 'bg-[#C89B3C]/10 text-[#C89B3C]' : 'bg-[#EEF1F5] text-[#7A8FA6]'">
+              {{ f.estado==='publicado' ? 'Publicado' : 'Borrador' }}
+            </span>
+          </div>
+          <p class="text-[11px] text-[#9BAAB8] mb-3 line-clamp-2">{{ f.descripcion }}</p>
+          <div class="flex items-center gap-3 text-[10px] text-[#9BAAB8] mb-4">
+            <span class="flex items-center gap-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              {{ f.fechaCreacion }}
+            </span>
+            <span class="flex items-center gap-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              {{ f.respuestas }} resp.
+            </span>
+            <span class="flex items-center gap-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              {{ f.preguntas.length }} preg.
+            </span>
+          </div>
+          <div *ngIf="f.link" class="flex items-center gap-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-3 py-2 mb-3">
+            <span class="text-[10px] text-[#4C6983] flex-1 truncate">{{ f.link }}</span>
+            <button (click)="linkGenerado=f.link!; copiarLink()" class="text-[#C89B3C] hover:text-[#B5882E]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button (click)="abrirEditor(f)" class="flex-1 flex items-center justify-center gap-1.5 bg-[#F5F6F8] hover:bg-[#EEF1F5] text-[#2D3E50] text-[11px] font-semibold py-2 rounded-xl transition-all">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Editar
+            </button>
+            <button (click)="eliminarFormulario(f)" class="w-8 h-8 flex items-center justify-center bg-[#FEF2F2] hover:bg-[#FEE2E2] text-[#DC2626] rounded-xl transition-all">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="formulariosFiltrados.length===0" class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+        <div class="w-16 h-16 bg-[#EEF1F5] rounded-2xl flex items-center justify-center mb-4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <p class="text-sm font-semibold text-[#2D3E50]">No hay formularios aquí</p>
+        <p class="text-xs text-[#9BAAB8] mt-1">Crea tu primer formulario para comenzar</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       VISTA: EDITOR
+  ════════════════════════════════════════════════ -->
+  <div *ngIf="vista==='editor'" class="flex flex-col h-screen overflow-hidden">
+
+    <!-- Barra superior -->
+    <div class="bg-white border-b border-[#EEF1F5] shadow-sm z-20 px-3 sm:px-5 py-3 flex items-center justify-between gap-2 shrink-0">
+      <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+        <button (click)="volverLista()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F5F6F8] text-[#7A8FA6] transition-all shrink-0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="min-w-0">
+          <p class="text-[9px] text-[#9BAAB8] uppercase font-semibold tracking-wide leading-none mb-0.5">Editor</p>
+          <p class="text-xs sm:text-sm font-bold text-[#2D3E50] truncate max-w-[120px] sm:max-w-xs">{{ formularioActual.titulo || 'Sin título' }}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <span class="hidden md:flex items-center gap-1 text-[10px] text-[#22C55E] font-medium mr-1">
+          <div class="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></div>Autoguardado
+        </span>
+        <!-- Orden aleatorio -->
+        <button (click)="mezclarOrden()" title="Mezclar orden"
+                class="hidden sm:flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-[#E2E8F0] text-[#4C6983] text-[11px] font-semibold hover:bg-[#F5F6F8] transition-all">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+          <span class="hidden lg:inline">Mezclar</span>
+        </button>
+        <button (click)="abrirPreview()" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl border border-[#E2E8F0] text-[#4C6983] text-[11px] sm:text-xs font-semibold hover:bg-[#F5F6F8] transition-all">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span class="hidden sm:inline">Vista Previa</span>
+        </button>
+        <button (click)="guardarBorrador()" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl border border-[#C89B3C] text-[#C89B3C] text-[11px] sm:text-xs font-semibold hover:bg-[#C89B3C]/5 transition-all">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <span class="hidden sm:inline">Guardar</span>
+        </button>
+        <button (click)="publicar()" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-white text-[11px] sm:text-xs font-semibold shadow-md transition-all"
+                [style.background]="formularioActual.tema.colorAcento">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+          Publicar
+        </button>
+      </div>
+    </div>
+
+    <!-- Cuerpo: 3 columnas -->
+    <div class="flex flex-1 overflow-hidden">
+
+      <!-- ── PANEL IZQUIERDO: Tipos de campo ── -->
+      <div class="hidden lg:flex flex-col w-52 xl:w-56 bg-white border-r border-[#EEF1F5] shrink-0 overflow-y-auto">
+        <div class="p-3 space-y-4">
+
+          <!-- Campos básicos -->
+          <div>
+            <p class="text-[9px] font-bold text-[#4C6983] uppercase tracking-widest mb-2 px-1">Campos Básicos</p>
+            <div class="space-y-0.5">
+              <button *ngFor="let tc of tiposBasicos" (click)="agregarPregunta(tc.tipo)"
+                      class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-[#F5F6F8] text-left transition-all group">
+                <span class="w-7 h-7 bg-[#EEF1F5] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#C89B3C]/10 transition-all">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#4C6983" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 group-hover:stroke-[#C89B3C]">
+                    <path [attr.d]="tc.svgPath"/>
+                  </svg>
+                </span>
+                <span class="text-xs font-medium text-[#2D3E50]">{{ tc.label }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Campos avanzados -->
+          <div>
+            <p class="text-[9px] font-bold text-[#4C6983] uppercase tracking-widest mb-2 px-1">Campos Avanzados</p>
+            <div class="space-y-0.5">
+              <button *ngFor="let tc of tiposAvanzados" (click)="agregarPregunta(tc.tipo)"
+                      class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-[#F5F6F8] text-left transition-all group">
+                <span class="w-7 h-7 bg-[#EEF1F5] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#C89B3C]/10 transition-all">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#4C6983" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 group-hover:stroke-[#C89B3C]">
+                    <path [attr.d]="tc.svgPath"/>
+                  </svg>
+                </span>
+                <span class="text-xs font-medium text-[#2D3E50]">{{ tc.label }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Contenido -->
+          <div>
+            <p class="text-[9px] font-bold text-[#4C6983] uppercase tracking-widest mb-2 px-1">Contenido</p>
+            <div class="space-y-0.5">
+              <button *ngFor="let tc of tiposContenido"
+                      (click)="tc.tipo === 'video' ? abrirModalVideo() : agregarPregunta(tc.tipo)"
+                      class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-[#F5F6F8] text-left transition-all group">
+                <span class="w-7 h-7 bg-[#EEF1F5] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#C89B3C]/10 transition-all">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#4C6983" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 group-hover:stroke-[#C89B3C]">
+                    <path [attr.d]="tc.svgPath"/>
+                  </svg>
+                </span>
+                <span class="text-xs font-medium text-[#2D3E50]">{{ tc.label }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Botón añadir campo -->
+          <button (click)="agregarPregunta()"
+                  class="w-full flex items-center justify-center gap-2 border-2 border-dashed border-[#C89B3C]/40 text-[#C89B3C] text-xs font-semibold py-2.5 rounded-xl hover:bg-[#C89B3C]/5 transition-all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Añadir Campo
+          </button>
+        </div>
+      </div>
+
+      <!-- ── CANVAS CENTRAL ── -->
+      <div class="flex-1 overflow-y-auto p-3 sm:p-5" [style.background]="formularioActual.tema.colorFondo">
+        <div class="max-w-2xl mx-auto space-y-3">
+
+          <!-- Tarjeta encabezado del formulario -->
+          <div class="rounded-2xl shadow-sm overflow-hidden" [style.background]="formularioActual.tema.colorFormulario">
+            <!-- Barra de color + imagen encabezado -->
+            <div class="h-3 w-full" [style.background]="formularioActual.tema.colorAcento"></div>
+            <div *ngIf="formularioActual.tema.imagenEncabezado" class="w-full h-32 sm:h-40 overflow-hidden">
+              <img [src]="formularioActual.tema.imagenEncabezado" alt="Encabezado" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4 sm:p-5">
+              <!-- Botón imagen encabezado -->
+              <div class="flex justify-end mb-2">
+                <button (click)="abrirModalEncabezado()" class="flex items-center gap-1 text-[10px] text-[#9BAAB8] hover:text-[#C89B3C] transition-colors">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+                    <path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/>
+                  </svg>
+                  {{ formularioActual.tema.imagenEncabezado ? 'Cambiar imagen' : 'Añadir imagen' }}
+                </button>
+              </div>
+              <input type="text" [(ngModel)]="formularioActual.titulo" placeholder="Título del formulario"
+                     class="w-full font-bold text-[#2D3E50] placeholder-[#B0BFCF] border-none outline-none bg-transparent mb-1.5"
+                     [ngClass]="tamanoEncabezadoClass()" [style.font-family]="formularioActual.tema.fuenteFormulario"/>
+              <input type="text" [(ngModel)]="formularioActual.descripcion" placeholder="Descripción del formulario (opcional)"
+                     class="w-full text-sm text-[#7A8FA6] placeholder-[#B0BFCF] border-none outline-none bg-transparent mb-3"/>
+              <select [(ngModel)]="formularioActual.categoria"
+                      class="text-xs border border-[#E2E8F0] rounded-xl px-3 py-2 text-[#4C6983] outline-none bg-[#F8FAFC] font-['Poppins',sans-serif]">
+                <option value="">Seleccionar Categoría</option>
+                <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Preguntas con drag & drop -->
+          <div
+            *ngFor="let p of formularioActual.preguntas; let i = index"
+            draggable="true"
+            (dragstart)="onDragStart(i)"
+            (dragover)="onDragOver($event, i)"
+            (drop)="onDrop(i)"
+            (dragend)="onDragEnd()"
+            (click)="seleccionarPregunta(p)"
+            class="rounded-2xl shadow-sm border transition-all cursor-pointer"
+            [style.background]="formularioActual.tema.colorFormulario"
+            [ngClass]="{
+              'border-[#C89B3C] ring-2 ring-[#C89B3C]/20': preguntaSeleccionada?.id === p.id,
+              'border-[#EEF1F5] hover:border-[#C89B3C]/40': preguntaSeleccionada?.id !== p.id,
+              'opacity-50': dragIndex === i,
+              'border-t-2 border-t-[#C89B3C]': dragOverIndex === i && dragIndex !== i
+            }"
+          >
+            <!-- ── SECCIÓN ── -->
+            <div *ngIf="p.tipo === 'seccion'" class="px-4 py-4">
+              <div class="flex items-center gap-2 mb-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 cursor-grab shrink-0"><circle cx="9" cy="5" r="1" fill="#9BAAB8"/><circle cx="15" cy="5" r="1" fill="#9BAAB8"/><circle cx="9" cy="12" r="1" fill="#9BAAB8"/><circle cx="15" cy="12" r="1" fill="#9BAAB8"/><circle cx="9" cy="19" r="1" fill="#9BAAB8"/><circle cx="15" cy="19" r="1" fill="#9BAAB8"/></svg>
+                <span class="text-[9px] font-bold text-[#C89B3C] uppercase tracking-widest">Sección</span>
+                <div class="flex items-center gap-1 ml-auto">
+                  <button (click)="moverArriba(i);$event.stopPropagation()" [disabled]="i===0" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded disabled:opacity-30">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2.5" class="w-3 h-3"><polyline points="18 15 12 9 6 15"/></svg>
+                  </button>
+                  <button (click)="moverAbajo(i);$event.stopPropagation()" [disabled]="i===formularioActual.preguntas.length-1" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded disabled:opacity-30">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2.5" class="w-3 h-3"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <button (click)="eliminarPregunta(p);$event.stopPropagation()" class="w-6 h-6 flex items-center justify-center hover:bg-[#FEE2E2] rounded">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" class="w-3.5 h-3.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="border-l-4 pl-3" [style.border-color]="formularioActual.tema.colorAcento">
+                <input type="text" [(ngModel)]="p.tituloSeccion" placeholder="Título de la sección"
+                       class="w-full text-base font-bold text-[#2D3E50] placeholder-[#B0BFCF] border-none outline-none bg-transparent mb-1" (click)="$event.stopPropagation()"/>
+                <input type="text" [(ngModel)]="p.descripcionSeccion" placeholder="Descripción de la sección (opcional)"
+                       class="w-full text-xs text-[#7A8FA6] placeholder-[#B0BFCF] border-none outline-none bg-transparent" (click)="$event.stopPropagation()"/>
+              </div>
+            </div>
+
+            <!-- ── VIDEO ── -->
+            <div *ngIf="p.tipo === 'video'" class="px-4 py-4">
+              <div class="flex items-center gap-2 mb-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 cursor-grab shrink-0"><circle cx="9" cy="5" r="1" fill="#9BAAB8"/><circle cx="15" cy="5" r="1" fill="#9BAAB8"/><circle cx="9" cy="12" r="1" fill="#9BAAB8"/><circle cx="15" cy="12" r="1" fill="#9BAAB8"/></svg>
+                <span class="text-[9px] font-bold text-[#9BAAB8] uppercase tracking-wide">Video YouTube</span>
+                <div class="flex items-center gap-1 ml-auto">
+                  <button (click)="moverArriba(i);$event.stopPropagation()" [disabled]="i===0" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded disabled:opacity-30">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2.5" class="w-3 h-3"><polyline points="18 15 12 9 6 15"/></svg>
+                  </button>
+                  <button (click)="moverAbajo(i);$event.stopPropagation()" [disabled]="i===formularioActual.preguntas.length-1" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded disabled:opacity-30">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2.5" class="w-3 h-3"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <button (click)="eliminarPregunta(p);$event.stopPropagation()" class="w-6 h-6 flex items-center justify-center hover:bg-[#FEE2E2] rounded">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" class="w-3.5 h-3.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                  </button>
+                </div>
+              </div>
+              <p class="text-sm font-semibold text-[#2D3E50] mb-2">{{ p.videoNombre || 'Video sin título' }}</p>
+              <div *ngIf="youtubeEmbedUrl(p.videoUrl || '') as embed" class="rounded-xl overflow-hidden aspect-video">
+                <iframe [src]="embed | trustUrl" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+              </div>
+              <div *ngIf="!youtubeEmbedUrl(p.videoUrl || '')" class="bg-[#F8FAFC] border-2 border-dashed border-[#E2E8F0] rounded-xl flex items-center justify-center h-24">
+                <p class="text-xs text-[#9BAAB8]">URL de YouTube inválida o no configurada</p>
+              </div>
+            </div>
+
+            <!-- ── PREGUNTA NORMAL ── -->
+            <div *ngIf="p.tipo !== 'seccion' && p.tipo !== 'video'" class="px-4 pb-4">
+              <!-- Header -->
+              <div class="flex items-center gap-2 pt-3 pb-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C0CAD5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 shrink-0 cursor-grab">
+                  <circle cx="9" cy="5" r="1" fill="#C0CAD5"/><circle cx="15" cy="5" r="1" fill="#C0CAD5"/>
+                  <circle cx="9" cy="12" r="1" fill="#C0CAD5"/><circle cx="15" cy="12" r="1" fill="#C0CAD5"/>
+                  <circle cx="9" cy="19" r="1" fill="#C0CAD5"/><circle cx="15" cy="19" r="1" fill="#C0CAD5"/>
+                </svg>
+                <span class="text-[9px] text-[#9BAAB8] font-semibold uppercase tracking-wide">Pregunta {{ i + 1 }} · {{ labelTipo(p.tipo) }}</span>
+                <span *ngIf="p.calificable" class="text-[9px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-semibold">Calificable · {{ p.puntaje }}pt</span>
+                <div class="flex items-center gap-0.5 ml-auto">
+                  <button (click)="moverArriba(i);$event.stopPropagation()" [disabled]="i===0" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded disabled:opacity-30">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2.5" class="w-3 h-3"><polyline points="18 15 12 9 6 15"/></svg>
+                  </button>
+                  <button (click)="moverAbajo(i);$event.stopPropagation()" [disabled]="i===formularioActual.preguntas.length-1" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded disabled:opacity-30">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2.5" class="w-3 h-3"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <button (click)="abrirModalImagen(p);$event.stopPropagation()" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded" title="Añadir imagen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+                  </button>
+                  <button (click)="duplicarPregunta(p);$event.stopPropagation()" class="w-6 h-6 flex items-center justify-center hover:bg-[#F5F6F8] rounded">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  </button>
+                  <button (click)="eliminarPregunta(p);$event.stopPropagation()" class="w-6 h-6 flex items-center justify-center hover:bg-[#FEE2E2] rounded">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Imagen adjunta si tiene -->
+              <div *ngIf="p.imagenUrl" class="mb-2 relative group/img">
+                <img [src]="p.imagenUrl" alt="Imagen adjunta" class="w-full max-h-40 object-cover rounded-xl border border-[#E2E8F0]" />
+                <button (click)="quitarImagen(p);$event.stopPropagation()" class="absolute top-2 right-2 w-6 h-6 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+
+              <!-- Etiqueta de la pregunta -->
+              <input type="text" [(ngModel)]="p.etiqueta" [placeholder]="'Pregunta ' + (i + 1)"
+                     class="w-full text-sm font-semibold text-[#2D3E50] placeholder-[#B0BFCF] border-none outline-none bg-transparent mb-1"
+                     (click)="$event.stopPropagation()" />
+
+              <!-- Placeholder visible si tiene -->
+              <p *ngIf="p.placeholder" class="text-[10px] text-[#9BAAB8] italic mb-2">Ayuda: {{ p.placeholder }}</p>
+
+              <!-- Vista previa por tipo -->
+              <div [ngSwitch]="p.tipo">
+                <!-- Texto corto -->
+                <input *ngSwitchCase="'texto_corto'" type="text" [placeholder]="p.placeholder || 'Respuesta corta...'"
+                       class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3 py-2 text-sm text-[#B0BFCF] outline-none" (click)="$event.stopPropagation()"/>
+                <!-- Párrafo -->
+                <textarea *ngSwitchCase="'parrafo'" rows="2" [placeholder]="p.placeholder || 'Respuesta larga...'"
+                          class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3 py-2 text-sm text-[#B0BFCF] outline-none resize-none" (click)="$event.stopPropagation()"></textarea>
+
+                <!-- Opción múltiple -->
+                <div *ngSwitchCase="'opcion_multiple'" class="space-y-1">
+                  <!-- Leyenda -->
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[9px] text-[#9BAAB8] italic">Edita el texto de cada opción. Marca ✓ la respuesta correcta.</span>
+                    <span *ngIf="p.opciones | correctaCount" class="text-[9px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">
+                      {{ p.opciones | correctaCount }} correcta(s)
+                    </span>
+                  </div>
+                  <div *ngFor="let o of p.opciones; let oi=index"
+                       class="flex items-center gap-2 px-2 py-1.5 rounded-xl transition-all"
+                       [ngClass]="o.esCorrecta ? 'bg-green-50 border border-green-200' : 'border border-transparent hover:bg-[#F8FAFC]'">
+                    <!-- Indicador radio -->
+                    <div class="w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-all"
+                         [ngClass]="o.esCorrecta ? 'border-green-500 bg-green-500' : 'border-[#C89B3C]'">
+                      <div *ngIf="o.esCorrecta" class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                    </div>
+                    <!-- Texto editable -->
+                    <input type="text" [(ngModel)]="o.texto"
+                           class="flex-1 text-sm font-medium outline-none bg-transparent border-b border-dashed transition-all"
+                           [ngClass]="o.esCorrecta ? 'text-green-700 border-green-300' : 'text-[#2D3E50] border-[#E2E8F0]'"
+                           [placeholder]="'Opción ' + (oi + 1)"
+                           (click)="$event.stopPropagation()"/>
+                    <!-- Badge correcta -->
+                    <span *ngIf="o.esCorrecta" class="text-[9px] bg-green-100 text-green-700 font-bold px-1.5 py-0.5 rounded-full shrink-0">✓ Correcta</span>
+                    <!-- Botón toggle correcta -->
+                    <button (click)="toggleCorrecta(p,o);$event.stopPropagation()"
+                            [title]="o.esCorrecta ? 'Quitar como correcta' : 'Marcar como correcta'"
+                            class="w-6 h-6 flex items-center justify-center rounded-full shrink-0 transition-all border"
+                            [ngClass]="o.esCorrecta ? 'bg-green-100 text-green-600 border-green-200 hover:bg-red-50 hover:text-red-400 hover:border-red-200' : 'bg-white text-[#9BAAB8] border-[#E2E8F0] hover:bg-green-50 hover:text-green-500 hover:border-green-200'">
+                      <svg *ngIf="o.esCorrecta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><polyline points="20 6 9 17 4 12"/></svg>
+                      <svg *ngIf="!o.esCorrecta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><circle cx="12" cy="12" r="9"/><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>
+                    <!-- Eliminar opción -->
+                    <button *ngIf="p.opciones.length>1" (click)="eliminarOpcion(p,o);$event.stopPropagation()"
+                            class="w-6 h-6 flex items-center justify-center rounded-full opacity-30 hover:opacity-100 hover:bg-red-50 text-[#DC2626] transition-all">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                  </div>
+                  <button (click)="agregarOpcion(p);$event.stopPropagation()" class="text-[11px] text-[#C89B3C] font-semibold flex items-center gap-1 mt-1 ml-1 hover:underline">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Añadir opción
+                  </button>
+                </div>
+
+                <!-- Casillas -->
+                <div *ngSwitchCase="'casillas'" class="space-y-1.5">
+                  <div *ngFor="let o of p.opciones" class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded border-2 shrink-0"
+                         [style.border-color]="o.esCorrecta ? '#22C55E' : '#C89B3C'"
+                         [ngClass]="o.esCorrecta ? 'bg-green-100' : ''"></div>
+                    <input type="text" [(ngModel)]="o.texto" class="flex-1 text-sm text-[#2D3E50] border-b border-dashed border-[#E2E8F0] outline-none bg-transparent" (click)="$event.stopPropagation()"/>
+                    <button (click)="toggleCorrecta(p,o);$event.stopPropagation()"
+                            class="w-5 h-5 flex items-center justify-center rounded-full shrink-0 transition-all"
+                            [ngClass]="o.esCorrecta ? 'bg-green-100 text-green-600' : 'bg-[#EEF1F5] text-[#9BAAB8] hover:bg-green-50 hover:text-green-500'">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>
+                    <button *ngIf="p.opciones.length>1" (click)="eliminarOpcion(p,o);$event.stopPropagation()" class="opacity-40 hover:opacity-100 text-[#DC2626]">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                  </div>
+                  <button (click)="agregarOpcion(p);$event.stopPropagation()" class="text-[11px] text-[#C89B3C] font-semibold flex items-center gap-1 mt-1 hover:underline">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Añadir opción
+                  </button>
+                </div>
+
+                <!-- Lista desplegable -->
+                <div *ngSwitchCase="'lista_desplegable'" class="space-y-1.5">
+                  <div class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3 py-2 text-xs text-[#B0BFCF] flex items-center justify-between mb-2">
+                    <span>Seleccionar...</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  <div *ngFor="let o of p.opciones" class="flex items-center gap-2 pl-2">
+                    <span class="text-[10px] text-[#9BAAB8]">—</span>
+                    <input type="text" [(ngModel)]="o.texto" class="flex-1 text-xs text-[#2D3E50] border-b border-dashed border-[#E2E8F0] outline-none bg-transparent" (click)="$event.stopPropagation()"/>
+                    <button *ngIf="p.opciones.length>1" (click)="eliminarOpcion(p,o);$event.stopPropagation()" class="opacity-40 hover:opacity-100 text-[#DC2626]">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                  </div>
+                  <button (click)="agregarOpcion(p);$event.stopPropagation()" class="text-[11px] text-[#C89B3C] font-semibold flex items-center gap-1 hover:underline">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Añadir opción
+                  </button>
+                </div>
+
+                <!-- Fecha -->
+                <div *ngSwitchCase="'fecha'" class="flex items-center gap-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3 py-2 text-xs text-[#B0BFCF]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Seleccione una fecha...
+                </div>
+
+                <!-- Subir archivo -->
+                <div *ngSwitchCase="'subir_archivo'" class="border-2 border-dashed border-[#E2E8F0] rounded-xl px-3 py-4 flex flex-col items-center gap-1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C0CAD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span class="text-xs text-[#B0BFCF]">Arrastra o selecciona un archivo</span>
+                </div>
+
+                <!-- Firma digital -->
+                <div *ngSwitchCase="'firma_digital'" class="border-2 border-dashed rounded-xl py-6 flex flex-col items-center gap-1"
+                     [style.border-color]="formularioActual.tema.colorAcento + '50'">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C89B3C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 opacity-40"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  <span class="text-xs text-[#B0BFCF]">Área de firma digital</span>
+                </div>
+
+                <!-- Geolocalización -->
+                <div *ngSwitchCase="'geolocalizacion'" class="flex items-center gap-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-xs text-[#B0BFCF]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Capturar ubicación GPS
+                </div>
+
+                <!-- Imagen adjunta como tipo campo imagen -->
+                <div *ngSwitchCase="'imagen'" class="border-2 border-dashed border-[#E2E8F0] rounded-xl px-3 py-4 flex flex-col items-center gap-1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C0CAD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+                  <span class="text-xs text-[#B0BFCF]">Haz clic en el ícono de imagen del header para subir</span>
+                </div>
+
+                <div *ngSwitchDefault class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3 py-2 text-xs text-[#B0BFCF]">Campo {{ labelTipo(p.tipo) }}</div>
+              </div>
+
+              <!-- Toggle obligatorio inline -->
+              <div class="flex items-center gap-2 mt-3 pt-2 border-t border-[#F0F3F7]">
+                <label class="relative inline-block w-8 h-4 shrink-0 cursor-pointer" (click)="$event.stopPropagation()">
+                  <input type="checkbox" [(ngModel)]="p.obligatorio" class="opacity-0 w-0 h-0"/>
+                  <span class="absolute inset-0 rounded-full transition-all duration-300" [ngClass]="p.obligatorio ? 'bg-[#C89B3C]' : 'bg-[#DDE4EC]'"></span>
+                  <span class="absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full shadow transition-transform duration-300" [ngClass]="p.obligatorio ? 'translate-x-4' : 'translate-x-0'"></span>
+                </label>
+                <span class="text-[10px] text-[#7A8FA6]">Obligatorio</span>
+                <span *ngIf="p.calificable" class="ml-auto text-[10px] text-green-600 font-semibold">✓ Respuesta correcta asignada</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón añadir pregunta al fondo -->
+          <button (click)="agregarPregunta()"
+                  class="w-full flex items-center justify-center gap-2 border-2 border-dashed border-[#C89B3C]/30 text-[#C89B3C] text-xs font-semibold py-3.5 rounded-2xl hover:bg-[#C89B3C]/5 hover:border-[#C89B3C]/60 transition-all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Añadir Pregunta
+          </button>
+        </div>
+      </div>
+
+      <!-- ── PANEL DERECHO: Configuración / Tema ── -->
+      <div class="hidden lg:flex flex-col w-64 xl:w-72 bg-white border-l border-[#EEF1F5] shrink-0">
+
+        <!-- Tabs panel derecho -->
+        <div class="flex border-b border-[#EEF1F5] shrink-0">
+          <button (click)="panelDerecho='pregunta'"
+                  class="flex-1 py-2.5 text-xs font-semibold transition-all"
+                  [ngClass]="panelDerecho==='pregunta' ? 'text-[#C89B3C] border-b-2 border-[#C89B3C]' : 'text-[#9BAAB8] hover:text-[#2D3E50]'">
+            Campo
+          </button>
+          <button (click)="panelDerecho='tema'"
+                  class="flex-1 py-2.5 text-xs font-semibold transition-all"
+                  [ngClass]="panelDerecho==='tema' ? 'text-[#C89B3C] border-b-2 border-[#C89B3C]' : 'text-[#9BAAB8] hover:text-[#2D3E50]'">
+            Tema
+          </button>
+        </div>
+
+        <!-- Panel: Campo -->
+        <div *ngIf="panelDerecho==='pregunta'" class="flex-1 overflow-y-auto p-4">
+          <div *ngIf="preguntaSeleccionada && preguntaSeleccionada.tipo !== 'seccion' && preguntaSeleccionada.tipo !== 'video'">
+            <div class="flex items-center gap-2 mb-4 pb-3 border-b border-[#EEF1F5]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#C89B3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 shrink-0">
+                <path [attr.d]="svgTipo(preguntaSeleccionada.tipo)"/>
+              </svg>
+              <div>
+                <p class="text-xs font-bold text-[#2D3E50]">Configuración</p>
+                <p class="text-[10px] text-[#C89B3C] font-semibold">{{ labelTipo(preguntaSeleccionada.tipo) }}</p>
+              </div>
+            </div>
+
+            <!-- Tipo -->
+            <div class="mb-3">
+              <label class="block text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-1">Tipo de campo</label>
+              <select [ngModel]="preguntaSeleccionada.tipo" (ngModelChange)="cambiarTipo(preguntaSeleccionada!, $event)"
+                      class="w-full text-xs border border-[#E2E8F0] rounded-xl px-3 py-2 text-[#2D3E50] outline-none focus:border-[#C89B3C] bg-[#F8FAFC] font-['Poppins',sans-serif]">
+                <option *ngFor="let tc of tiposCampo" [value]="tc.tipo">{{ tc.label }}</option>
+              </select>
+            </div>
+
+            <!-- Etiqueta -->
+            <div class="mb-3">
+              <label class="block text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-1">Etiqueta</label>
+              <input type="text" [(ngModel)]="preguntaSeleccionada.etiqueta" placeholder="Nombre del campo"
+                     class="w-full text-xs border border-[#E2E8F0] rounded-xl px-3 py-2 text-[#2D3E50] placeholder-[#B0BFCF] outline-none focus:border-[#C89B3C] bg-[#F8FAFC] font-['Poppins',sans-serif]"/>
+            </div>
+
+            <!-- Placeholder -->
+            <div class="mb-3">
+              <label class="block text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-1">Texto de ayuda</label>
+              <input type="text" [(ngModel)]="preguntaSeleccionada.placeholder" placeholder="Ej: Juan Pérez"
+                     class="w-full text-xs border border-[#E2E8F0] rounded-xl px-3 py-2 text-[#2D3E50] placeholder-[#B0BFCF] outline-none focus:border-[#C89B3C] bg-[#F8FAFC] font-['Poppins',sans-serif]"/>
+              <p class="text-[9px] text-[#B0BFCF] mt-1">Se muestra debajo del campo en el canvas.</p>
+            </div>
+
+            <!-- Obligatorio -->
+            <div class="mb-3 flex items-center justify-between">
+              <div>
+                <p class="text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide">Obligatorio</p>
+              </div>
+              <label class="relative inline-block w-10 h-5 shrink-0">
+                <input type="checkbox" [(ngModel)]="preguntaSeleccionada.obligatorio" class="opacity-0 w-0 h-0"/>
+                <span class="absolute inset-0 rounded-full cursor-pointer transition-all duration-300" [ngClass]="preguntaSeleccionada.obligatorio ? 'bg-[#C89B3C]' : 'bg-[#DDE4EC]'"></span>
+                <span class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300" [ngClass]="preguntaSeleccionada.obligatorio ? 'translate-x-5' : 'translate-x-0'"></span>
+              </label>
+            </div>
+
+            <!-- Calificable -->
+            <div class="mb-3 p-3 bg-green-50 border border-green-100 rounded-xl">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-[10px] font-bold text-green-700 uppercase tracking-wide">Respuesta Correcta</p>
+                <label class="relative inline-block w-10 h-5 shrink-0">
+                  <input type="checkbox" [(ngModel)]="preguntaSeleccionada.calificable" class="opacity-0 w-0 h-0"/>
+                  <span class="absolute inset-0 rounded-full cursor-pointer transition-all duration-300" [ngClass]="preguntaSeleccionada.calificable ? 'bg-green-500' : 'bg-[#DDE4EC]'"></span>
+                  <span class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300" [ngClass]="preguntaSeleccionada.calificable ? 'translate-x-5' : 'translate-x-0'"></span>
+                </label>
+              </div>
+              <div *ngIf="preguntaSeleccionada.calificable">
+                <!-- Puntaje -->
+                <div class="flex items-center gap-2 mb-2">
+                  <label class="text-[10px] text-green-700 font-semibold">Puntaje:</label>
+                  <input type="number" [(ngModel)]="preguntaSeleccionada.puntaje" min="0" max="100"
+                         class="w-16 text-xs border border-green-200 rounded-lg px-2 py-1 text-[#2D3E50] outline-none focus:border-green-400 bg-white font-['Poppins',sans-serif]"/>
+                  <span class="text-[10px] text-green-600">puntos</span>
+                </div>
+                <!-- Respuesta correcta para texto_corto -->
+                <div *ngIf="preguntaSeleccionada.tipo==='texto_corto' || preguntaSeleccionada.tipo==='parrafo'">
+                  <label class="block text-[10px] text-green-700 font-semibold mb-1">Respuesta esperada:</label>
+                  <input type="text" [(ngModel)]="preguntaSeleccionada.respuestaCorrecta" placeholder="Escribe la respuesta correcta"
+                         class="w-full text-xs border border-green-200 rounded-lg px-2 py-1.5 text-[#2D3E50] outline-none focus:border-green-400 bg-white font-['Poppins',sans-serif]"/>
+                </div>
+                <p *ngIf="tieneOpciones(preguntaSeleccionada.tipo)" class="text-[10px] text-green-600 mt-1">
+                  Marca ✓ en la opción correcta directamente en el canvas.
+                </p>
+              </div>
+            </div>
+
+            <!-- Validación min/max -->
+            <div *ngIf="preguntaSeleccionada.tipo==='texto_corto' || preguntaSeleccionada.tipo==='parrafo'" class="mb-3">
+              <p class="text-[10px] font-bold text-[#4C6983] uppercase tracking-wide mb-2">Validación</p>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[9px] text-[#9BAAB8] mb-1">Mín. caracteres</label>
+                  <input type="number" [(ngModel)]="preguntaSeleccionada.minCaracteres" placeholder="2"
+                         class="w-full text-xs border border-[#E2E8F0] rounded-lg px-2 py-1.5 outline-none focus:border-[#C89B3C] font-['Poppins',sans-serif]"/>
+                </div>
+                <div>
+                  <label class="block text-[9px] text-[#9BAAB8] mb-1">Máx. caracteres</label>
+                  <input type="number" [(ngModel)]="preguntaSeleccionada.maxCaracteres" placeholder="100"
+                         class="w-full text-xs border border-[#E2E8F0] rounded-lg px-2 py-1.5 outline-none focus:border-[#C89B3C] font-['Poppins',sans-serif]"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón eliminar -->
+            <button (click)="eliminarPregunta(preguntaSeleccionada!)"
+                    class="w-full flex items-center justify-center gap-2 text-[#DC2626] text-xs font-semibold border border-[#FECACA] bg-[#FEF2F2] hover:bg-[#FEE2E2] py-2 rounded-xl mt-1 transition-all">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              Eliminar Campo
+            </button>
+          </div>
+          <div *ngIf="!preguntaSeleccionada || preguntaSeleccionada.tipo==='seccion'" class="flex flex-col items-center justify-center h-full py-10 text-center">
+            <div class="w-12 h-12 bg-[#EEF1F5] rounded-2xl flex items-center justify-center mb-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9BAAB8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <p class="text-xs font-semibold text-[#2D3E50]">Selecciona un campo</p>
+            <p class="text-[10px] text-[#9BAAB8] mt-1">Haz clic en una pregunta para configurarla</p>
+          </div>
+        </div>
+
+        <!-- Panel: Tema -->
+        <div *ngIf="panelDerecho==='tema'" class="flex-1 overflow-y-auto p-4 space-y-4">
+          <p class="text-xs font-bold text-[#2D3E50]">Apariencia del Formulario</p>
+
+          <!-- Paleta de colores -->
+          <div>
+            <p class="text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-2">Paleta de colores</p>
+            <div class="grid grid-cols-3 gap-2">
+              <button *ngFor="let col of paleta" (click)="aplicarPaleta(col)"
+                      class="flex flex-col items-center gap-1 p-1.5 rounded-xl border-2 transition-all hover:border-[#C89B3C]"
+                      [ngClass]="formularioActual.tema.colorAcento===col.acento ? 'border-[#C89B3C]' : 'border-transparent'">
+                <div class="w-full h-6 rounded-lg flex overflow-hidden">
+                  <div class="flex-1" [style.background]="col.fondo"></div>
+                  <div class="w-4" [style.background]="col.acento"></div>
+                </div>
+                <span class="text-[8px] text-[#7A8FA6] leading-none text-center">{{ col.label }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Colores personalizados -->
+          <div>
+            <p class="text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-2">Personalizar</p>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-[#2D3E50]">Color acento</span>
+                <input type="color" [(ngModel)]="formularioActual.tema.colorAcento" class="w-8 h-8 rounded-lg border border-[#E2E8F0] cursor-pointer p-0.5"/>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-[#2D3E50]">Fondo general</span>
+                <input type="color" [(ngModel)]="formularioActual.tema.colorFondo" class="w-8 h-8 rounded-lg border border-[#E2E8F0] cursor-pointer p-0.5"/>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-[#2D3E50]">Fondo tarjeta</span>
+                <input type="color" [(ngModel)]="formularioActual.tema.colorFormulario" class="w-8 h-8 rounded-lg border border-[#E2E8F0] cursor-pointer p-0.5"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tipografía -->
+          <div>
+            <p class="text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-2">Tipografía</p>
+            <select [(ngModel)]="formularioActual.tema.fuenteFormulario"
+                    class="w-full text-xs border border-[#E2E8F0] rounded-xl px-3 py-2 text-[#2D3E50] outline-none focus:border-[#C89B3C] bg-[#F8FAFC] font-['Poppins',sans-serif] mb-2">
+              <option *ngFor="let f of fuentes" [value]="f">{{ f }}</option>
+            </select>
+
+            <!-- Tamaños -->
+            <div class="space-y-2">
+              <div>
+                <label class="block text-[9px] text-[#9BAAB8] mb-1">Tamaño encabezado</label>
+                <div class="flex gap-1">
+                  <button *ngFor="let s of [{v:'sm',l:'S'},{v:'md',l:'M'},{v:'lg',l:'L'},{v:'xl',l:'XL'}]"
+                          (click)="setTamanoEncabezado(s.v)"
+                          class="flex-1 py-1 text-[10px] font-semibold rounded-lg border transition-all"
+                          [ngClass]="formularioActual.tema.tamanoEncabezado===s.v ? 'bg-[#C89B3C] text-white border-[#C89B3C]' : 'bg-white text-[#7A8FA6] border-[#E2E8F0] hover:border-[#C89B3C]'">
+                    {{ s.l }}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[9px] text-[#9BAAB8] mb-1">Tamaño preguntas</label>
+                <div class="flex gap-1">
+                  <button *ngFor="let s of [{v:'xs',l:'S'},{v:'sm',l:'M'},{v:'md',l:'L'}]"
+                          (click)="setTamanoPregunta(s.v)"
+                          class="flex-1 py-1 text-[10px] font-semibold rounded-lg border transition-all"
+                          [ngClass]="formularioActual.tema.tamanoPregunta===s.v ? 'bg-[#C89B3C] text-white border-[#C89B3C]' : 'bg-white text-[#7A8FA6] border-[#E2E8F0] hover:border-[#C89B3C]'">
+                    {{ s.l }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Imagen encabezado -->
+          <div>
+            <p class="text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-2">Imagen de encabezado</p>
+            <button (click)="abrirModalEncabezado()"
+                    class="w-full flex items-center justify-center gap-2 border-2 border-dashed border-[#E2E8F0] hover:border-[#C89B3C] text-[#9BAAB8] hover:text-[#C89B3C] text-xs font-semibold py-3 rounded-xl transition-all">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+              {{ formularioActual.tema.imagenEncabezado ? 'Cambiar imagen' : 'Añadir imagen' }}
+            </button>
+            <button *ngIf="formularioActual.tema.imagenEncabezado" (click)="formularioActual.tema.imagenEncabezado=undefined"
+                    class="w-full mt-1 text-[10px] text-[#DC2626] hover:underline">Quitar imagen</button>
+          </div>
+
+          <!-- Orden aleatorio -->
+          <div class="flex items-center justify-between p-3 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0]">
+            <div>
+              <p class="text-xs font-semibold text-[#2D3E50]">Orden aleatorio</p>
+              <p class="text-[9px] text-[#9BAAB8]">Mezcla preguntas al abrir</p>
+            </div>
+            <label class="relative inline-block w-10 h-5 shrink-0">
+              <input type="checkbox" [(ngModel)]="formularioActual.ordenAleatorio" class="opacity-0 w-0 h-0"/>
+              <span class="absolute inset-0 rounded-full cursor-pointer transition-all duration-300" [ngClass]="formularioActual.ordenAleatorio ? 'bg-[#C89B3C]' : 'bg-[#DDE4EC]'"></span>
+              <span class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300" [ngClass]="formularioActual.ordenAleatorio ? 'translate-x-5' : 'translate-x-0'"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       VISTA: PREVIEW
+  ════════════════════════════════════════════════ -->
+  <div *ngIf="vista==='preview'" class="w-full min-h-screen" [style.background]="formularioActual.tema.colorFondo">
+    <!-- Barra preview -->
+    <div class="bg-white border-b border-[#EEF1F5] shadow-sm px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-10">
+      <div class="flex items-center gap-2">
+        <button (click)="volverEditor()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F5F6F8] transition-all">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7A8FA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="text-xs font-semibold text-[#7A8FA6]">Previsualización</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="hidden sm:block text-[10px] bg-[#FFF8EC] text-[#C89B3C] border border-[#C89B3C]/30 px-2 py-1 rounded-lg font-semibold">Modo Vista Previa</span>
+        <button (click)="publicar()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-white text-xs font-semibold transition-all"
+                [style.background]="formularioActual.tema.colorAcento">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+          Publicar
+        </button>
+      </div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+      <!-- Tarjeta título preview -->
+      <div class="rounded-2xl shadow-sm overflow-hidden mb-4" [style.background]="formularioActual.tema.colorFormulario">
+        <div class="h-2" [style.background]="formularioActual.tema.colorAcento"></div>
+        <div *ngIf="formularioActual.tema.imagenEncabezado" class="w-full h-32 sm:h-40 overflow-hidden">
+          <img [src]="formularioActual.tema.imagenEncabezado" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-5 sm:p-6">
+          <h1 class="font-bold text-[#2D3E50] mb-1" [ngClass]="tamanoEncabezadoClass()" [style.font-family]="formularioActual.tema.fuenteFormulario">
+            {{ formularioActual.titulo || 'Sin título' }}
+          </h1>
+          <p class="text-sm text-[#7A8FA6]">{{ formularioActual.descripcion }}</p>
+          <span *ngIf="formularioActual.categoria" class="inline-block mt-3 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide text-white"
+                [style.background]="formularioActual.tema.colorAcento">{{ formularioActual.categoria }}</span>
+        </div>
+      </div>
+      <!-- Preguntas preview -->
+      <div class="space-y-3">
+        <div *ngFor="let p of formularioActual.preguntas; let i=index">
+          <!-- Sección -->
+          <div *ngIf="p.tipo==='seccion'" class="py-2">
+            <div class="border-l-4 pl-3" [style.border-color]="formularioActual.tema.colorAcento">
+              <h2 class="text-base font-bold text-[#2D3E50]">{{ p.tituloSeccion }}</h2>
+              <p *ngIf="p.descripcionSeccion" class="text-xs text-[#7A8FA6] mt-0.5">{{ p.descripcionSeccion }}</p>
+            </div>
+          </div>
+          <!-- Video -->
+          <div *ngIf="p.tipo==='video'" class="rounded-2xl shadow-sm overflow-hidden" [style.background]="formularioActual.tema.colorFormulario">
+            <div class="p-4">
+              <p class="text-sm font-semibold text-[#2D3E50] mb-2">{{ p.videoNombre }}</p>
+              <div *ngIf="youtubeEmbedUrl(p.videoUrl||'') as emb" class="rounded-xl overflow-hidden aspect-video">
+                <iframe [src]="emb | trustUrl" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <!-- Pregunta normal -->
+          <div *ngIf="p.tipo!=='seccion' && p.tipo!=='video'" class="rounded-2xl shadow-sm border border-[#EEF1F5] p-4 sm:p-5" [style.background]="formularioActual.tema.colorFormulario">
+            <div class="flex items-start gap-1 mb-3">
+              <span class="text-sm font-semibold text-[#2D3E50] flex-1" [style.font-family]="formularioActual.tema.fuenteFormulario">{{ p.etiqueta || ('Pregunta ' + (i+1)) }}</span>
+              <span *ngIf="p.obligatorio" class="text-[#DC2626] text-base leading-none ml-1">*</span>
+            </div>
+            <div [ngSwitch]="p.tipo">
+              <input *ngSwitchCase="'texto_corto'" type="text" [placeholder]="p.placeholder||'Tu respuesta'"
+                     class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm placeholder-[#B0BFCF] outline-none transition-all font-['Poppins',sans-serif]"
+                     [style.border-color]="'#E2E8F0'" [style.font-family]="formularioActual.tema.fuenteFormulario"/>
+              <textarea *ngSwitchCase="'parrafo'" rows="3" [placeholder]="p.placeholder||'Tu respuesta'"
+                        class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm placeholder-[#B0BFCF] outline-none resize-none font-['Poppins',sans-serif]"></textarea>
+              <div *ngSwitchCase="'opcion_multiple'" class="space-y-2">
+                <label *ngFor="let o of p.opciones" class="flex items-center gap-3 cursor-pointer group">
+                  <div class="w-4 h-4 rounded-full border-2 border-[#E2E8F0] group-hover:border-[#C89B3C] shrink-0 transition-all"></div>
+                  <span class="text-sm text-[#2D3E50]">{{ o.texto }}</span>
+                </label>
+              </div>
+              <div *ngSwitchCase="'casillas'" class="space-y-2">
+                <label *ngFor="let o of p.opciones" class="flex items-center gap-3 cursor-pointer group">
+                  <div class="w-4 h-4 rounded border-2 border-[#E2E8F0] group-hover:border-[#C89B3C] shrink-0 transition-all"></div>
+                  <span class="text-sm text-[#2D3E50]">{{ o.texto }}</span>
+                </label>
+              </div>
+              <select *ngSwitchCase="'lista_desplegable'" class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm text-[#2D3E50] outline-none bg-white font-['Poppins',sans-serif]">
+                <option value="">Seleccionar...</option>
+                <option *ngFor="let o of p.opciones" [value]="o.id">{{ o.texto }}</option>
+              </select>
+              <input *ngSwitchCase="'fecha'" type="date" class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm outline-none font-['Poppins',sans-serif]"/>
+              <div *ngSwitchCase="'subir_archivo'" class="border-2 border-dashed border-[#E2E8F0] rounded-xl px-4 py-6 text-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C0CAD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 mx-auto mb-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p class="text-sm text-[#9BAAB8]">Arrastra un archivo o <span class="font-semibold cursor-pointer" [style.color]="formularioActual.tema.colorAcento">selecciona</span></p>
+              </div>
+              <div *ngSwitchCase="'firma_digital'" class="border-2 border-dashed rounded-xl h-32 flex items-center justify-center"
+                   [style.border-color]="formularioActual.tema.colorAcento + '50'">
+                <p class="text-sm text-[#B0BFCF]">Firme aquí utilizando su dedo o puntero</p>
+              </div>
+              <div *ngSwitchCase="'geolocalizacion'" class="flex items-center gap-2 border border-[#E2E8F0] rounded-xl px-3 py-2.5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C89B3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span class="text-sm text-[#9BAAB8]">Toca para capturar ubicación</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Botón enviar -->
+      <button class="w-full mt-5 text-white font-bold text-sm uppercase tracking-widest py-4 rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all"
+              [style.background]="formularioActual.tema.colorAcento">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        Enviar y Generar PDF
+      </button>
+      <p class="text-center text-[10px] text-[#B0BFCF] mt-2">Al presionar, certifica que la información es verdadera.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       MODAL: IMAGEN ADJUNTA A PREGUNTA
+  ════════════════════════════════════════════════ -->
+  <div *ngIf="modalImagenVisible" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" (click)="modalImagenVisible=false">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6" (click)="$event.stopPropagation()">
+      <h3 class="text-sm font-bold text-[#2D3E50] mb-1">Añadir imagen a la pregunta</h3>
+      <p class="text-xs text-[#9BAAB8] mb-4">Elige una imagen por URL o sube un archivo desde tu dispositivo.</p>
+
+      <!-- Tabs URL / Subir -->
+      <div class="flex border-b border-[#EEF1F5] mb-4">
+        <button (click)="imagenTabModal='url'"
+                class="flex-1 py-2 text-xs font-semibold transition-all"
+                [ngClass]="imagenTabModal==='url' ? 'text-[#C89B3C] border-b-2 border-[#C89B3C]' : 'text-[#9BAAB8] hover:text-[#2D3E50]'">
+          Por URL
+        </button>
+        <button (click)="imagenTabModal='archivo'"
+                class="flex-1 py-2 text-xs font-semibold transition-all"
+                [ngClass]="imagenTabModal==='archivo' ? 'text-[#C89B3C] border-b-2 border-[#C89B3C]' : 'text-[#9BAAB8] hover:text-[#2D3E50]'">
+          Subir archivo
+        </button>
+      </div>
+
+      <!-- Tab: URL -->
+      <div *ngIf="imagenTabModal==='url'">
+        <input type="text" [(ngModel)]="imagenUrlTmp" placeholder="https://ejemplo.com/imagen.jpg"
+               class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm text-[#2D3E50] placeholder-[#B0BFCF] outline-none focus:border-[#C89B3C] mb-3 font-['Poppins',sans-serif]"/>
+      </div>
+
+      <!-- Tab: Subir archivo -->
+      <div *ngIf="imagenTabModal==='archivo'">
+        <label class="flex flex-col items-center justify-center w-full border-2 border-dashed border-[#E2E8F0] hover:border-[#C89B3C] rounded-xl py-6 cursor-pointer transition-all mb-3 group">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C0CAD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 mb-2 group-hover:stroke-[#C89B3C] transition-all">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span class="text-xs text-[#9BAAB8] group-hover:text-[#C89B3C] transition-all font-medium">
+            {{ imagenUrlTmp ? 'Imagen cargada ✓ — clic para cambiar' : 'Haz clic para seleccionar imagen' }}
+          </span>
+          <span class="text-[10px] text-[#B0BFCF] mt-1">JPG, PNG, WEBP — máx. 5 MB</span>
+          <input type="file" accept="image/*" class="hidden" (change)="onImagenFileChange($event)"/>
+        </label>
+      </div>
+
+      <!-- Preview imagen (ambos tabs) -->
+      <div *ngIf="imagenUrlTmp" class="mb-4 rounded-xl overflow-hidden border border-[#E2E8F0]">
+        <img [src]="imagenUrlTmp" alt="Preview" class="w-full max-h-36 object-cover" />
+      </div>
+
+      <div class="flex gap-2">
+        <button (click)="modalImagenVisible=false" class="flex-1 py-2 rounded-xl border border-[#E2E8F0] text-xs font-semibold text-[#7A8FA6] hover:bg-[#F5F6F8] transition-all">Cancelar</button>
+        <button (click)="confirmarImagen()" [disabled]="!imagenUrlTmp"
+                class="flex-1 py-2 rounded-xl text-white text-xs font-semibold transition-all disabled:opacity-40"
+                [style.background]="formularioActual.tema.colorAcento">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       MODAL: VIDEO YOUTUBE
+  ════════════════════════════════════════════════ -->
+  <div *ngIf="modalVideoVisible" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" (click)="modalVideoVisible=false">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6" (click)="$event.stopPropagation()">
+      <h3 class="text-sm font-bold text-[#2D3E50] mb-1">Añadir video de YouTube</h3>
+      <p class="text-xs text-[#9BAAB8] mb-4">Escribe el nombre y pega la URL o ID del video.</p>
+      <div class="mb-3">
+        <label class="block text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-1">Nombre del video</label>
+        <input type="text" [(ngModel)]="videoNombreTmp" placeholder="Ej: Inducción de Seguridad"
+               class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm text-[#2D3E50] placeholder-[#B0BFCF] outline-none focus:border-[#C89B3C] font-['Poppins',sans-serif]"/>
+      </div>
+      <div class="mb-4">
+        <label class="block text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-1">URL de YouTube</label>
+        <input type="text" [(ngModel)]="videoUrlTmp" placeholder="https://youtube.com/watch?v=..."
+               class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm text-[#2D3E50] placeholder-[#B0BFCF] outline-none focus:border-[#C89B3C] font-['Poppins',sans-serif]"/>
+      </div>
+      <div class="flex gap-2">
+        <button (click)="modalVideoVisible=false" class="flex-1 py-2 rounded-xl border border-[#E2E8F0] text-xs font-semibold text-[#7A8FA6] hover:bg-[#F5F6F8] transition-all">Cancelar</button>
+        <button (click)="confirmarVideo()" class="flex-1 py-2 rounded-xl text-white text-xs font-semibold transition-all" [style.background]="formularioActual.tema.colorAcento">Añadir Video</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       MODAL: IMAGEN ENCABEZADO
+  ════════════════════════════════════════════════ -->
+  <div *ngIf="modalEncabezadoVisible" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" (click)="modalEncabezadoVisible=false">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" [style.background]="formularioActual.tema.colorAcento + '20'">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" [style.stroke]="formularioActual.tema.colorAcento">
+            <path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-[#2D3E50]">Imagen de encabezado</h3>
+          <p class="text-[10px] text-[#9BAAB8]">Se mostrará en la parte superior del formulario</p>
+        </div>
+      </div>
+
+      <!-- Tabs URL / Subir -->
+      <div class="flex border-b border-[#EEF1F5] mb-4">
+        <button (click)="encabezadoTabModal='url'"
+                class="flex-1 py-2.5 text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
+                [ngClass]="encabezadoTabModal==='url' ? 'text-[#C89B3C] border-b-2 border-[#C89B3C]' : 'text-[#9BAAB8] hover:text-[#2D3E50]'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          Por URL
+        </button>
+        <button (click)="encabezadoTabModal='archivo'"
+                class="flex-1 py-2.5 text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
+                [ngClass]="encabezadoTabModal==='archivo' ? 'text-[#C89B3C] border-b-2 border-[#C89B3C]' : 'text-[#9BAAB8] hover:text-[#2D3E50]'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Subir archivo
+        </button>
+      </div>
+
+      <!-- Tab: URL -->
+      <div *ngIf="encabezadoTabModal==='url'" class="mb-4">
+        <label class="block text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-1.5">URL de la imagen</label>
+        <input type="text" [(ngModel)]="imagenEncabezadoTmp"
+               placeholder="https://ejemplo.com/banner.jpg"
+               class="w-full border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-sm text-[#2D3E50] placeholder-[#B0BFCF] outline-none focus:border-[#C89B3C] font-['Poppins',sans-serif] transition-all"/>
+        <p class="text-[10px] text-[#B0BFCF] mt-1.5">Recomendado: imágenes panorámicas (1200×300 px o similar)</p>
+      </div>
+
+      <!-- Tab: Subir archivo -->
+      <div *ngIf="encabezadoTabModal==='archivo'" class="mb-4">
+        <label class="flex flex-col items-center justify-center w-full border-2 border-dashed rounded-xl py-7 cursor-pointer transition-all group"
+               [ngClass]="imagenEncabezadoTmp ? 'border-[#C89B3C]/50 bg-[#C89B3C]/5' : 'border-[#E2E8F0] hover:border-[#C89B3C]'">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 mb-2 transition-all"
+               [ngClass]="imagenEncabezadoTmp ? 'stroke-[#C89B3C]' : 'stroke-[#C0CAD5] group-hover:stroke-[#C89B3C]'">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9l4-4 4 4 4-4 4 4"/>
+            <path d="M3 15l4 4 4-4 4 4 4-4"/>
+          </svg>
+          <span class="text-xs font-semibold transition-all"
+                [ngClass]="imagenEncabezadoTmp ? 'text-[#C89B3C]' : 'text-[#9BAAB8] group-hover:text-[#C89B3C]'">
+            {{ imagenEncabezadoTmp ? '✓ Imagen cargada — clic para cambiar' : 'Haz clic o arrastra tu imagen aquí' }}
+          </span>
+          <span class="text-[10px] text-[#B0BFCF] mt-1">JPG, PNG, WEBP — máx. 5 MB</span>
+          <input type="file" accept="image/*" class="hidden" (change)="onEncabezadoFileChange($event)"/>
+        </label>
+      </div>
+
+      <!-- Preview (ambos tabs) -->
+      <div *ngIf="imagenEncabezadoTmp" class="mb-4">
+        <p class="text-[10px] font-semibold text-[#4C6983] uppercase tracking-wide mb-1.5">Vista previa del encabezado</p>
+        <div class="rounded-xl overflow-hidden border border-[#E2E8F0] relative">
+          <!-- Barra de color simulada encima -->
+          <div class="h-1.5 w-full" [style.background]="formularioActual.tema.colorAcento"></div>
+          <img [src]="imagenEncabezadoTmp" alt="Preview encabezado" class="w-full h-28 object-cover" />
+          <!-- Botón quitar -->
+          <button (click)="imagenEncabezadoTmp=''"
+                  class="absolute top-3 right-2 w-6 h-6 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="flex gap-2">
+        <button (click)="modalEncabezadoVisible=false"
+                class="flex-1 py-2.5 rounded-xl border border-[#E2E8F0] text-xs font-semibold text-[#7A8FA6] hover:bg-[#F5F6F8] transition-all">
+          Cancelar
+        </button>
+        <button (click)="confirmarEncabezado()" [disabled]="!imagenEncabezadoTmp"
+                class="flex-1 py-2.5 rounded-xl text-white text-xs font-semibold transition-all disabled:opacity-40 flex items-center justify-center gap-1.5"
+                [style.background]="formularioActual.tema.colorAcento">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Aplicar imagen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       MODAL: PUBLICADO CON ÉXITO
+  ════════════════════════════════════════════════ -->
+  <div *ngIf="modalPublicadoVisible" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" (click)="cerrarModalPublicado()">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 sm:p-8 flex flex-col items-center text-center" (click)="$event.stopPropagation()">
+      <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" [style.background]="formularioActual.tema.colorAcento + '20'">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8" [style.stroke]="formularioActual.tema.colorAcento"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 class="text-xl font-bold text-[#2D3E50] mb-2">¡Formulario publicado<br>con éxito!</h2>
+      <p class="text-xs text-[#7A8FA6] mb-5 leading-relaxed">Su formulario está activo. Cualquier persona con este enlace puede completarlo.</p>
+      <div class="flex items-center gap-2 w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3 py-2.5 mb-5">
+        <span class="flex-1 text-[11px] text-[#4C6983] truncate text-left">{{ linkGenerado }}</span>
+        <button (click)="copiarLink()" class="shrink-0 hover:opacity-70 transition-opacity" [style.color]="formularioActual.tema.colorAcento">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <button (click)="copiarLink()" class="w-full flex items-center justify-center gap-2 text-white font-semibold text-sm py-3 rounded-2xl shadow-md mb-2 transition-all"
+              [style.background]="formularioActual.tema.colorAcento">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Copiar enlace para compartir
+      </button>
+      <button class="w-full flex items-center justify-center gap-2 bg-[#4C6983] hover:bg-[#3B5470] text-white font-semibold text-sm py-3 rounded-2xl mb-3 transition-all">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Compartir vía...
+      </button>
+      <button (click)="cerrarModalPublicado()" class="text-sm text-[#9BAAB8] hover:text-[#2D3E50] font-medium transition-colors">Listo</button>
+    </div>
+  </div>
+
+</div>

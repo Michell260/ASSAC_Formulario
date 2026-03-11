@@ -1,4 +1,7 @@
 import {
+  PlatformLocation
+} from "./chunk-XHFQEINT.js";
+import {
   ApplicationRef,
   Attribute,
   ChangeDetectorRef,
@@ -43,6 +46,7 @@ import {
   getLocalePluralCase,
   inject,
   isPromise,
+  isSignal,
   isSubscribable,
   numberAttribute,
   performanceMarkFeature,
@@ -58,126 +62,11 @@ import {
   ɵɵdefineNgModule,
   ɵɵdefinePipe,
   ɵɵdirectiveInject,
+  ɵɵgetInheritedFactory,
   ɵɵinject,
   ɵɵinjectAttribute,
   ɵɵstyleProp
-} from "./chunk-IZ5D7H34.js";
-
-// node_modules/@angular/common/fesm2022/_platform_location-chunk.mjs
-var _DOM = null;
-function getDOM() {
-  return _DOM;
-}
-function setRootDomAdapter(adapter) {
-  _DOM ??= adapter;
-}
-var DomAdapter = class {
-};
-var PlatformLocation = class _PlatformLocation {
-  historyGo(relativePosition) {
-    throw new Error(ngDevMode ? "Not implemented" : "");
-  }
-  static ɵfac = function PlatformLocation_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _PlatformLocation)();
-  };
-  static ɵprov = ɵɵdefineInjectable({
-    token: _PlatformLocation,
-    factory: () => (() => inject(BrowserPlatformLocation))(),
-    providedIn: "platform"
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PlatformLocation, [{
-    type: Injectable,
-    args: [{
-      providedIn: "platform",
-      useFactory: () => inject(BrowserPlatformLocation)
-    }]
-  }], null, null);
-})();
-var LOCATION_INITIALIZED = new InjectionToken(typeof ngDevMode !== "undefined" && ngDevMode ? "Location Initialized" : "");
-var BrowserPlatformLocation = class _BrowserPlatformLocation extends PlatformLocation {
-  _location;
-  _history;
-  _doc = inject(DOCUMENT);
-  constructor() {
-    super();
-    this._location = window.location;
-    this._history = window.history;
-  }
-  getBaseHrefFromDOM() {
-    return getDOM().getBaseHref(this._doc);
-  }
-  onPopState(fn) {
-    const window2 = getDOM().getGlobalEventTarget(this._doc, "window");
-    window2.addEventListener("popstate", fn, false);
-    return () => window2.removeEventListener("popstate", fn);
-  }
-  onHashChange(fn) {
-    const window2 = getDOM().getGlobalEventTarget(this._doc, "window");
-    window2.addEventListener("hashchange", fn, false);
-    return () => window2.removeEventListener("hashchange", fn);
-  }
-  get href() {
-    return this._location.href;
-  }
-  get protocol() {
-    return this._location.protocol;
-  }
-  get hostname() {
-    return this._location.hostname;
-  }
-  get port() {
-    return this._location.port;
-  }
-  get pathname() {
-    return this._location.pathname;
-  }
-  get search() {
-    return this._location.search;
-  }
-  get hash() {
-    return this._location.hash;
-  }
-  set pathname(newPath) {
-    this._location.pathname = newPath;
-  }
-  pushState(state, title, url) {
-    this._history.pushState(state, title, url);
-  }
-  replaceState(state, title, url) {
-    this._history.replaceState(state, title, url);
-  }
-  forward() {
-    this._history.forward();
-  }
-  back() {
-    this._history.back();
-  }
-  historyGo(relativePosition = 0) {
-    this._history.go(relativePosition);
-  }
-  getState() {
-    return this._history.state;
-  }
-  static ɵfac = function BrowserPlatformLocation_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _BrowserPlatformLocation)();
-  };
-  static ɵprov = ɵɵdefineInjectable({
-    token: _BrowserPlatformLocation,
-    factory: () => (() => new _BrowserPlatformLocation())(),
-    providedIn: "platform"
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(BrowserPlatformLocation, [{
-    type: Injectable,
-    args: [{
-      providedIn: "platform",
-      useFactory: () => new BrowserPlatformLocation()
-    }]
-  }], () => [], null);
-})();
+} from "./chunk-KWKPH65C.js";
 
 // node_modules/@angular/common/fesm2022/_location-chunk.mjs
 function joinWithSlash(start, end) {
@@ -293,6 +182,67 @@ var PathLocationStrategy = class _PathLocationStrategy extends LocationStrategy 
     }]
   }], null);
 })();
+var NoTrailingSlashPathLocationStrategy = class _NoTrailingSlashPathLocationStrategy extends PathLocationStrategy {
+  prepareExternalUrl(internal) {
+    const path = extractUrlPath(internal);
+    if (path.endsWith("/") && path.length > 1) {
+      internal = path.slice(0, -1) + internal.slice(path.length);
+    }
+    return super.prepareExternalUrl(internal);
+  }
+  static ɵfac = /* @__PURE__ */ (() => {
+    let ɵNoTrailingSlashPathLocationStrategy_BaseFactory;
+    return function NoTrailingSlashPathLocationStrategy_Factory(__ngFactoryType__) {
+      return (ɵNoTrailingSlashPathLocationStrategy_BaseFactory || (ɵNoTrailingSlashPathLocationStrategy_BaseFactory = ɵɵgetInheritedFactory(_NoTrailingSlashPathLocationStrategy)))(__ngFactoryType__ || _NoTrailingSlashPathLocationStrategy);
+    };
+  })();
+  static ɵprov = ɵɵdefineInjectable({
+    token: _NoTrailingSlashPathLocationStrategy,
+    factory: _NoTrailingSlashPathLocationStrategy.ɵfac,
+    providedIn: "root"
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NoTrailingSlashPathLocationStrategy, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], null, null);
+})();
+var TrailingSlashPathLocationStrategy = class _TrailingSlashPathLocationStrategy extends PathLocationStrategy {
+  prepareExternalUrl(internal) {
+    const path = extractUrlPath(internal);
+    if (!path.endsWith("/")) {
+      internal = path + "/" + internal.slice(path.length);
+    }
+    return super.prepareExternalUrl(internal);
+  }
+  static ɵfac = /* @__PURE__ */ (() => {
+    let ɵTrailingSlashPathLocationStrategy_BaseFactory;
+    return function TrailingSlashPathLocationStrategy_Factory(__ngFactoryType__) {
+      return (ɵTrailingSlashPathLocationStrategy_BaseFactory || (ɵTrailingSlashPathLocationStrategy_BaseFactory = ɵɵgetInheritedFactory(_TrailingSlashPathLocationStrategy)))(__ngFactoryType__ || _TrailingSlashPathLocationStrategy);
+    };
+  })();
+  static ɵprov = ɵɵdefineInjectable({
+    token: _TrailingSlashPathLocationStrategy,
+    factory: _TrailingSlashPathLocationStrategy.ɵfac,
+    providedIn: "root"
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(TrailingSlashPathLocationStrategy, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], null, null);
+})();
+function extractUrlPath(url) {
+  const questionMarkOrHashIndex = url.search(/[?#]/);
+  const pathEnd = questionMarkOrHashIndex > -1 ? questionMarkOrHashIndex : url.length;
+  return url.slice(0, pathEnd);
+}
 var Location = class _Location {
   _subject = new Subject();
   _basePath;
@@ -2555,6 +2505,7 @@ var NgTemplateOutlet = class _NgTemplateOutlet {
   ngTemplateOutletContext = null;
   ngTemplateOutlet = null;
   ngTemplateOutletInjector = null;
+  injector = inject(Injector);
   constructor(_viewContainerRef) {
     this._viewContainerRef = _viewContainerRef;
   }
@@ -2570,9 +2521,15 @@ var NgTemplateOutlet = class _NgTemplateOutlet {
       }
       const viewContext = this._createContextForwardProxy();
       this._viewRef = viewContainerRef.createEmbeddedView(this.ngTemplateOutlet, viewContext, {
-        injector: this.ngTemplateOutletInjector ?? void 0
+        injector: this._getInjector()
       });
     }
+  }
+  _getInjector() {
+    if (this.ngTemplateOutletInjector === "outlet") {
+      return this.injector;
+    }
+    return this.ngTemplateOutletInjector ?? void 0;
   }
   _shouldRecreateView(changes) {
     return !!changes["ngTemplateOutlet"] || !!changes["ngTemplateOutletInjector"];
@@ -2630,6 +2587,11 @@ var NgTemplateOutlet = class _NgTemplateOutlet {
 var COMMON_DIRECTIVES = [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase];
 function invalidPipeArgumentError(type, value) {
   return new RuntimeError(2100, ngDevMode && `InvalidPipeArgument: '${value}' for pipe '${stringify(type)}'`);
+}
+function warnIfSignal(pipeName, value) {
+  if (isSignal(value)) {
+    console.warn(`The ${pipeName} does not unwrap signals. Received a signal with value:`, value());
+  }
 }
 var SubscribableStrategy = class {
   createSubscription(async, updateLatestValue, onError) {
@@ -2943,6 +2905,7 @@ var I18nSelectPipe = class _I18nSelectPipe {
 })();
 var JsonPipe = class _JsonPipe {
   transform(value) {
+    ngDevMode && warnIfSignal("JsonPipe", value);
     return JSON.stringify(value, null, 2);
   }
   static ɵfac = function JsonPipe_Factory(__ngFactoryType__) {
@@ -2978,6 +2941,7 @@ var KeyValuePipe = class _KeyValuePipe {
   keyValues = [];
   compareFn = defaultComparator;
   transform(input, compareFn = defaultComparator) {
+    ngDevMode && warnIfSignal("KeyValuePipe", input);
     if (!input || !(input instanceof Map) && typeof input !== "object") {
       return null;
     }
@@ -3260,21 +3224,6 @@ var PlatformNavigation = class _PlatformNavigation {
   }], null, null);
 })();
 
-// node_modules/@angular/common/fesm2022/_xhr-chunk.mjs
-function parseCookieValue(cookieStr, name) {
-  name = encodeURIComponent(name);
-  for (const cookie of cookieStr.split(";")) {
-    const eqIndex = cookie.indexOf("=");
-    const [cookieName, cookieValue] = eqIndex == -1 ? [cookie, ""] : [cookie.slice(0, eqIndex), cookie.slice(eqIndex + 1)];
-    if (cookieName.trim() === name) {
-      return decodeURIComponent(cookieValue);
-    }
-  }
-  return null;
-}
-var XhrFactory = class {
-};
-
 // node_modules/@angular/common/fesm2022/common.mjs
 var NavigationAdapterForLocation = class _NavigationAdapterForLocation extends Location {
   navigation = inject(PlatformNavigation);
@@ -3346,7 +3295,7 @@ function isPlatformBrowser(platformId) {
 function isPlatformServer(platformId) {
   return platformId === PLATFORM_SERVER_ID;
 }
-var VERSION = new Version("21.1.5");
+var VERSION = new Version("21.2.0");
 var ViewportScroller = class _ViewportScroller {
   static ɵprov = ɵɵdefineInjectable({
     token: _ViewportScroller,
@@ -3508,6 +3457,9 @@ function createCloudflareUrl(path, config) {
   if (config.width) {
     params += `,width=${config.width}`;
   }
+  if (config.height) {
+    params += `,height=${config.height}`;
+  }
   if (config.isPlaceholder) {
     params += `,quality=${PLACEHOLDER_QUALITY}`;
   }
@@ -3531,6 +3483,9 @@ function createCloudinaryUrl(path, config) {
   let params = `f_auto,${quality}`;
   if (config.width) {
     params += `,w_${config.width}`;
+  }
+  if (config.height) {
+    params += `,h_${config.height}`;
   }
   if (config.loaderParams?.["rounded"]) {
     params += `,r_max`;
@@ -3559,6 +3514,9 @@ function createImagekitUrl(path, config) {
   if (width) {
     params.push(`w-${width}`);
   }
+  if (config.height) {
+    params.push(`h-${config.height}`);
+  }
   if (config.isPlaceholder) {
     params.push(`q-${PLACEHOLDER_QUALITY}`);
   }
@@ -3584,6 +3542,9 @@ function createImgixUrl(path, config) {
   params.push("auto=format");
   if (config.width) {
     params.push(`w=${config.width}`);
+  }
+  if (config.height) {
+    params.push(`h=${config.height}`);
   }
   if (config.isPlaceholder) {
     params.push(`q=${PLACEHOLDER_QUALITY}`);
@@ -3631,6 +3592,9 @@ function createNetlifyUrl(config, path) {
   url.searchParams.set("url", config.src);
   if (config.width) {
     url.searchParams.set("w", config.width.toString());
+  }
+  if (config.height) {
+    url.searchParams.set("h", config.height.toString());
   }
   const configQuality = config.loaderParams?.["quality"] ?? config.loaderParams?.["q"];
   if (config.isPlaceholder && !configQuality) {
@@ -3692,26 +3656,59 @@ var LCPImageObserver = class _LCPImageObserver {
   }
   registerImage(rewrittenSrc, isPriority) {
     if (!this.observer) return;
-    const newObservedImageState = {
-      priority: isPriority,
-      modified: false,
-      alreadyWarnedModified: false,
-      alreadyWarnedPriority: false
-    };
-    this.images.set(getUrl(rewrittenSrc, this.window).href, newObservedImageState);
+    const url = getUrl(rewrittenSrc, this.window).href;
+    const existingState = this.images.get(url);
+    if (existingState) {
+      existingState.priority = existingState.priority || isPriority;
+      existingState.count++;
+    } else {
+      const newObservedImageState = {
+        priority: isPriority,
+        modified: false,
+        alreadyWarnedModified: false,
+        alreadyWarnedPriority: false,
+        count: 1
+      };
+      this.images.set(url, newObservedImageState);
+    }
   }
   unregisterImage(rewrittenSrc) {
     if (!this.observer) return;
-    this.images.delete(getUrl(rewrittenSrc, this.window).href);
+    const url = getUrl(rewrittenSrc, this.window).href;
+    const existingState = this.images.get(url);
+    if (existingState) {
+      existingState.count--;
+      if (existingState.count <= 0) {
+        this.images.delete(url);
+      }
+    }
   }
   updateImage(originalSrc, newSrc) {
     if (!this.observer) return;
     const originalUrl = getUrl(originalSrc, this.window).href;
-    const img = this.images.get(originalUrl);
-    if (img) {
-      img.modified = true;
-      this.images.set(getUrl(newSrc, this.window).href, img);
+    const newUrl = getUrl(newSrc, this.window).href;
+    if (originalUrl === newUrl) return;
+    const originalState = this.images.get(originalUrl);
+    if (!originalState) return;
+    originalState.count--;
+    if (originalState.count <= 0) {
       this.images.delete(originalUrl);
+    }
+    const newState = this.images.get(newUrl);
+    if (newState) {
+      newState.priority = newState.priority || originalState.priority;
+      newState.modified = true;
+      newState.alreadyWarnedPriority = newState.alreadyWarnedPriority || originalState.alreadyWarnedPriority;
+      newState.alreadyWarnedModified = newState.alreadyWarnedModified || originalState.alreadyWarnedModified;
+      newState.count++;
+    } else {
+      this.images.set(newUrl, {
+        priority: originalState.priority,
+        modified: true,
+        alreadyWarnedModified: originalState.alreadyWarnedModified,
+        alreadyWarnedPriority: originalState.alreadyWarnedPriority,
+        count: 1
+      });
     }
   }
   ngOnDestroy() {
@@ -4014,10 +4011,20 @@ var NgOptimizedImage = class _NgOptimizedImage {
       assertPlaceholderDimensions(this, this.imgElement);
     }
   }
+  getAspectRatio() {
+    if (this.width && this.height && this.height !== 0) {
+      return this.width / this.height;
+    }
+    return null;
+  }
   callImageLoader(configWithoutCustomParams) {
     let augmentedConfig = configWithoutCustomParams;
     if (this.loaderParams) {
       augmentedConfig.loaderParams = this.loaderParams;
+    }
+    const ratio = this.getAspectRatio();
+    if (ratio !== null && augmentedConfig.width) {
+      augmentedConfig.height = Math.round(augmentedConfig.width / ratio);
     }
     return this.imageLoader(augmentedConfig);
   }
@@ -4563,16 +4570,12 @@ function booleanOrUrlAttribute(value) {
 }
 
 export {
-  getDOM,
-  setRootDomAdapter,
-  DomAdapter,
-  PlatformLocation,
-  LOCATION_INITIALIZED,
-  BrowserPlatformLocation,
   normalizeQueryParams,
   LocationStrategy,
   APP_BASE_HREF,
   PathLocationStrategy,
+  NoTrailingSlashPathLocationStrategy,
+  TrailingSlashPathLocationStrategy,
   Location,
   HashLocationStrategy,
   NumberFormatStyle,
@@ -4640,8 +4643,6 @@ export {
   CommonModule,
   PRECOMMIT_HANDLER_SUPPORTED,
   PlatformNavigation,
-  parseCookieValue,
-  XhrFactory,
   NavigationAdapterForLocation,
   registerLocaleData2 as registerLocaleData,
   PLATFORM_BROWSER_ID,
@@ -4660,4 +4661,4 @@ export {
   PRECONNECT_CHECK_BLOCKLIST,
   NgOptimizedImage
 };
-//# sourceMappingURL=chunk-IFZ6PJ5N.js.map
+//# sourceMappingURL=chunk-ZXI26AW5.js.map
