@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -25,9 +25,10 @@ export interface Trabajador {
   templateUrl: './trabajadores.component.html',
   styleUrls: ['./trabajadores.component.css']
 })
-export class TrabajadoresComponent {
+export class TrabajadoresComponent implements OnInit {
   busqueda: string = '';
   trabajadorSeleccionado: Trabajador | null = null;
+  esMobil: boolean = false;
 
   trabajadores: Trabajador[] = [
     {
@@ -79,6 +80,15 @@ export class TrabajadoresComponent {
     }
   ];
 
+  ngOnInit(): void {
+    this.checkMobil();
+  }
+
+  @HostListener('window:resize')
+  checkMobil(): void {
+    this.esMobil = window.innerWidth < 768;
+  }
+
   get trabajadoresFiltrados(): Trabajador[] {
     const q = this.busqueda.toLowerCase().trim();
     if (!q) return this.trabajadores;
@@ -88,8 +98,14 @@ export class TrabajadoresComponent {
     );
   }
 
+  get scorePromedio(): number {
+    if (!this.trabajadorSeleccionado) return 0;
+    const h = this.trabajadorSeleccionado.historial;
+    if (!h.length) return 0;
+    return Math.round(h.reduce((acc, f) => acc + f.puntaje, 0) / h.length);
+  }
+
   onBusquedaChange(): void {
-    // Si el trabajador seleccionado ya no está en los resultados filtrados, deseleccionar
     if (this.trabajadorSeleccionado) {
       const sigue = this.trabajadoresFiltrados.find(t => t.id === this.trabajadorSeleccionado?.id);
       if (!sigue) this.trabajadorSeleccionado = null;
@@ -101,7 +117,6 @@ export class TrabajadoresComponent {
   }
 
   seleccionarTrabajador(t: Trabajador): void {
-    // Toggle: click al mismo trabajador cierra el historial
     if (this.trabajadorSeleccionado?.id === t.id) {
       this.trabajadorSeleccionado = null;
     } else {
