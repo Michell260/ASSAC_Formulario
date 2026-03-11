@@ -5,6 +5,32 @@
   <h1 class="text-xl font-bold text-[#cb9120] mb-1">Perfil y Configuración</h1>
   <p class="text-sm text-gray-400 mb-6">Gestione su cuenta, seguridad y preferencias de notificación en un solo lugar.</p>
 
+  <!-- Perfil desktop -->
+  <div class="bg-white rounded-2xl shadow-sm p-6 mb-5 flex items-center gap-5">
+    <div class="relative w-[72px] h-[72px] shrink-0">
+      <div class="w-[72px] h-[72px] rounded-full bg-[#f0e8df] flex items-center justify-center">
+        <svg class="w-10 h-10 stroke-[#c4a882]" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/>
+        </svg>
+      </div>
+      <div class="absolute bottom-0 right-0 w-[22px] h-[22px] rounded-full bg-[#cb9120] border-2 border-white flex items-center justify-center cursor-pointer">
+        <svg class="w-2.5 h-2.5 stroke-white" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="flex-1">
+      <h2 class="text-base font-bold text-gray-800">Juan Pérez</h2>
+      <p class="text-xs text-gray-400 mt-0.5">juan.perez&#64;assac.com</p>
+      <span class="inline-block mt-2 text-[10px] font-semibold tracking-widest text-[#4c6983] bg-[#eef2f6] px-3 py-1 rounded-full">ADMINISTRADOR</span>
+    </div>
+    <div class="text-right shrink-0">
+      <p class="text-[10px] text-gray-300 italic">Último acceso</p>
+      <p class="text-xs text-gray-400 font-medium mt-0.5">Hoy, 09:42 AM</p>
+    </div>
+  </div>
+
   <!-- Card -->
   <div class="bg-white rounded-2xl shadow-sm p-7 mb-5">
 
@@ -20,7 +46,6 @@
         <h2 class="text-sm font-bold text-gray-800">Cambio de Contraseña</h2>
       </div>
 
-      <!-- Contraseña actual -->
       <div class="mb-4">
         <label class="block text-xs font-medium text-gray-500 mb-1.5">Contraseña actual</label>
         <div class="relative">
@@ -34,7 +59,6 @@
         </div>
       </div>
 
-      <!-- Nueva y confirmar -->
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
           <label class="block text-xs font-medium text-gray-500 mb-1.5">Nueva contraseña</label>
@@ -59,6 +83,34 @@
               </svg>
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- Requisitos desktop -->
+      <div class="mb-4 p-3.5 bg-gray-50 rounded-xl">
+        <p class="text-[10px] font-bold tracking-widest uppercase text-[#cb9120] mb-2.5">Requisitos de Seguridad</p>
+        <div class="flex items-center gap-4 flex-wrap">
+          <div class="flex items-center gap-1.5 text-xs text-green-700">
+            <svg viewBox="0 0 24 24" fill="#2e7d32" stroke="none" class="w-3.5 h-3.5 shrink-0">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="9 12 11 14 15 10" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Mínimo 8 caracteres
+          </div>
+          <div class="flex items-center gap-1.5 text-xs text-gray-400">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" class="w-3.5 h-3.5 shrink-0"><circle cx="12" cy="12" r="10"/></svg>
+            Incluye un número
+          </div>
+          <div class="flex items-center gap-1.5 text-xs text-gray-400">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" class="w-3.5 h-3.5 shrink-0"><circle cx="12" cy="12" r="10"/></svg>
+            Una letra mayúscula
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="h-1 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full w-[55%] bg-[#cb9120] rounded-full"></div>
+          </div>
+          <span class="text-[11px] text-gray-400 mt-1 block">Fortaleza: Media</span>
         </div>
       </div>
 
@@ -111,7 +163,7 @@
 
   <!-- Footer -->
   <div class="flex items-center justify-between px-1 py-4">
-    <p class="text-xs text-gray-300 italic">Último inicio de sesión: Hoy a las 09:42 AM</p>
+    <p class="text-xs text-gray-300 italic">© 2026 ASSAC. Todos los derechos reservados.</p>
     <button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#cb9120] text-sm font-semibold text-white shadow-[0_4px_12px_rgba(203,145,32,0.35)] font-[Poppins]">
       <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -121,15 +173,12 @@
       Cerrar Sesión
     </button>
   </div>
-
-  <p class="text-center text-xs text-gray-300 pb-4">© 2026 ASSAC. Todos los derechos reservados.</p>
 </div>
 
 
 <!-- ═══════════════ VISTA MÓVIL - PRINCIPAL ═══════════════ -->
 <div class="md:hidden font-[Poppins]" *ngIf="vistaMovil === 'principal'">
 
-  <!-- Perfil -->
   <div class="flex flex-col items-center py-6 gap-2.5">
     <div class="relative w-[90px] h-[90px]">
       <div class="w-[90px] h-[90px] rounded-full bg-[#f0e8df] flex items-center justify-center">
@@ -145,10 +194,10 @@
       </div>
     </div>
     <h2 class="text-lg font-bold text-gray-800">Juan Pérez</h2>
+    <p class="text-xs text-gray-400 -mt-1">juan.perez&#64;assac.com</p>
     <span class="text-[11px] font-semibold tracking-widest text-[#4c6983] bg-[#eef2f6] px-3.5 py-1 rounded-full">ADMINISTRADOR</span>
   </div>
 
-  <!-- Cuenta -->
   <div class="mb-6 px-4">
     <p class="text-[11px] font-bold tracking-widest uppercase text-[#4c6983] mb-2.5 px-1">Configuración de la Cuenta</p>
     <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -163,21 +212,9 @@
           <polyline points="9 18 15 12 9 6"/>
         </svg>
       </div>
-      <div class="flex items-center gap-3.5 p-4 cursor-pointer">
-        <div class="w-[38px] h-[38px] rounded-xl bg-[#fff8ec] flex items-center justify-center shrink-0">
-          <svg class="w-[18px] h-[18px] stroke-[#cb9120]" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <span class="flex-1 text-sm font-medium text-gray-800">Autenticación de dos factores (2FA)</span>
-        <svg class="w-4 h-4 stroke-gray-300" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </div>
     </div>
   </div>
 
-  <!-- Preferencias -->
   <div class="mb-6 px-4">
     <p class="text-[11px] font-bold tracking-widest uppercase text-[#4c6983] mb-2.5 px-1">Preferencias</p>
     <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -209,7 +246,6 @@
     </div>
   </div>
 
-  <!-- Cerrar sesión -->
   <div class="px-4 pb-6">
     <button class="w-full py-4 rounded-2xl bg-white text-sm font-semibold text-[#4c6983] flex items-center justify-center gap-2.5 shadow-sm font-[Poppins]">
       <svg class="w-[18px] h-[18px] stroke-[#4c6983]" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -226,7 +262,6 @@
 <!-- ═══════════════ VISTA MÓVIL - CAMBIAR CONTRASEÑA ═══════════════ -->
 <div class="md:hidden px-4 font-[Poppins]" *ngIf="vistaMovil === 'contrasena'">
 
-  <!-- Header -->
   <div class="flex items-center gap-2.5 py-4 mb-2">
     <button class="w-8 h-8 flex items-center justify-center border-none bg-transparent cursor-pointer" (click)="volverPrincipal()">
       <svg class="w-6 h-6 stroke-[#4c6983]" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -242,7 +277,6 @@
   <h2 class="text-xl font-bold text-gray-800 mb-1.5">Cambiar contraseña</h2>
   <p class="text-sm text-gray-400 mb-6 leading-relaxed">Asegura tu cuenta actualizando tu clave de acceso.</p>
 
-  <!-- Campos -->
   <div class="mb-4">
     <label class="block text-xs font-medium text-gray-500 mb-1.5">Contraseña actual</label>
     <div class="relative">
@@ -282,7 +316,6 @@
     </div>
   </div>
 
-  <!-- Requisitos -->
   <div class="my-5">
     <p class="text-[10px] font-bold tracking-widest uppercase text-[#cb9120] mb-3">Requisitos de Seguridad</p>
     <div class="flex items-center gap-2 mb-2 text-sm text-green-800">

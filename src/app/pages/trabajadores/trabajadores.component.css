@@ -1,0 +1,43 @@
+/* trabajadores.component.css */
+/* Estilos mínimos — casi todo está manejado por Tailwind */
+
+/* Scroll suave en el panel de historial */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #e5e7eb transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 4px;
+}
+
+/* Animación de entrada del panel historial */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animación al seleccionar trabajador */
+.historial-panel-enter {
+  animation: slideInRight 0.25s ease-out forwards;
+}
+
+/* Animación de entrada del historial */
+.historial-panel {
+  animation: slideInRight 0.25s ease-out forwards;
+}

@@ -38,8 +38,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "postcssConfiguration": "postcss.config.js"
+            "scripts": []
           },
           "configurations": {
             "production": {

@@ -18,7 +18,6 @@ export class ConfiguracionComponent {
   nuevaContrasena = 'Contraseña nueva';
   confirmarContrasena = 'Contraseña nueva';
 
-  activar2FA = false;
   notifCorreo = true;
   notifSistema = true;
   notifPush = false;
