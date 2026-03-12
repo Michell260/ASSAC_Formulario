@@ -75,9 +75,7 @@
   transition: background 0.2s;
 }
 
-.btn-notificacion:hover {
-  background: #e8eaed;
-}
+.btn-notificacion:hover { background: #e8eaed; }
 
 .btn-notificacion svg {
   width: 17px;
@@ -101,6 +99,14 @@
   width: 18px;
   height: 18px;
   stroke: #4c6983;
+}
+
+/* ── DESKTOP: ocultar logo, título y subtítulo ── */
+@media (min-width: 769px) {
+  .header-logo,
+  .header-info {
+    display: none;
+  }
 }
 
 /* ── MÓVIL ── */

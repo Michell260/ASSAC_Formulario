@@ -35,7 +35,6 @@ import {
   NgSwitchCase,
   NgSwitchDefault,
   NgTemplateOutlet,
-  NoTrailingSlashPathLocationStrategy,
   NullViewportScroller,
   NumberFormatStyle,
   NumberSymbol,
@@ -49,7 +48,6 @@ import {
   Plural,
   SlicePipe,
   TitleCasePipe,
-  TrailingSlashPathLocationStrategy,
   TranslationWidth,
   UpperCasePipe,
   VERSION,
@@ -89,7 +87,7 @@ import {
   provideImgixLoader,
   provideNetlifyLoader,
   registerLocaleData
-} from "./chunk-ZXI26AW5.js";
+} from "./chunk-LQE7QNU5.js";
 import {
   BrowserPlatformLocation,
   DomAdapter,
@@ -99,11 +97,11 @@ import {
   getDOM,
   parseCookieValue,
   setRootDomAdapter
-} from "./chunk-XHFQEINT.js";
+} from "./chunk-2KSCYICW.js";
 import {
   DOCUMENT,
   IMAGE_CONFIG
-} from "./chunk-KWKPH65C.js";
+} from "./chunk-IZ5D7H34.js";
 export {
   APP_BASE_HREF,
   AsyncPipe,
@@ -145,7 +143,6 @@ export {
   NgSwitchCase,
   NgSwitchDefault,
   NgTemplateOutlet,
-  NoTrailingSlashPathLocationStrategy,
   NumberFormatStyle,
   NumberSymbol,
   PRECONNECT_CHECK_BLOCKLIST,
@@ -156,7 +153,6 @@ export {
   Plural,
   SlicePipe,
   TitleCasePipe,
-  TrailingSlashPathLocationStrategy,
   TranslationWidth,
   UpperCasePipe,
   VERSION,
